@@ -26,9 +26,16 @@ import {
   Outline
 } from "@react-three/postprocessing";
 
-export function Model(props) {
+export function Model({ props, SelectToZoom }) {
   const { nodes, materials } = useGLTF("/new new new scene.gltf");
   const [hovered, hover] = useState(null);
+  const [Name, setName] = useState(null);
+  const groupRef = useRef();
+  const handleClick = (e) => {
+    if (e.object.type === "Mesh") {
+      SelectToZoom(e.object);
+    }
+  };
   console.log(hovered);
   return (
     <group {...props} dispose={null}>
@@ -2123,66 +2130,94 @@ export function Model(props) {
         </group>
       </group>
       <Select>
-        <mesh
-          onPointerOver={() => hover(true)}
-          onPointerOut={() => hover(false)}
-          castShadow
-          receiveShadow
-          geometry={nodes.Plane004.geometry}
-          material={materials.greeenscreen}
-          position={[3.07, 2.26, -5.51]}
-          rotation={[Math.PI / 2, 0, Math.PI / 9]}
-          scale={[1.12, 1.02, 0.85]}
-        />
-        <mesh
-          onPointerOver={() => hover(true)}
-          onPointerOut={() => hover(false)}
-          castShadow
-          receiveShadow
-          geometry={nodes.Plane005.geometry}
-          material={materials.greeenscreen}
-          position={[1.71, 8.89, -9.59]}
-          rotation={[Math.PI / 2, 0, 0.12]}
-          scale={[1.07, 1, 0.87]}
-        />
-        <mesh
-          onPointerOver={() => hover(true)}
-          onPointerOut={() => hover(false)}
-          castShadow
-          receiveShadow
-          geometry={nodes.Plane002.geometry}
-          material={materials.greeenscreen}
-          position={[-2.06, 5.92, -5.67]}
-          rotation={[1.57, 0, -1]}
-          scale={[1.08, 1.03, 0.9]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Plane001.geometry}
-          material={materials.greeenscreen}
-          position={[-4.27, 2.75, -3.54]}
-          rotation={[Math.PI / 2, 0, -1.09]}
-          scale={[1.03, 1.01, 0.87]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Plane007.geometry}
-          material={materials.greeenscreen}
-          position={[7.76, 8.93, -5.15]}
-          rotation={[Math.PI / 2, 0, Math.PI / 3]}
-          scale={[1, 1, 0.92]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Plane.geometry}
-          material={materials.greeenscreen}
-          position={[0.52, 4.04, -6.91]}
-          rotation={[1.59, 0, 0]}
-          scale={1.03}
-        />
+        <group ref={groupRef} onClick={handleClick}>
+          <mesh
+            name="Plane1"
+            onPointerOver={() => hover(true)}
+            onPointerOut={() => hover(false)}
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane004.geometry}
+            material={materials.greeenscreen}
+            position={[3.07, 2.26, -5.51]}
+            rotation={[Math.PI / 2, 0, Math.PI / 9]}
+            scale={[1.12, 1.02, 0.85]}
+          />
+          <mesh
+            name="Plane2"
+            onPointerOver={() => hover(true)}
+            onPointerOut={() => hover(false)}
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane005.geometry}
+            material={materials.greeenscreen}
+            position={[1.71, 8.89, -9.59]}
+            rotation={[Math.PI / 2, 0, 0.12]}
+            scale={[1.07, 1, 0.87]}
+          />
+          <mesh
+            name="Plane3"
+            onPointerOver={() => hover(true)}
+            onPointerOut={() => hover(false)}
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane002.geometry}
+            material={materials.greeenscreen}
+            position={[-2.06, 5.92, -5.67]}
+            rotation={[1.57, 0, -1]}
+            scale={[1.08, 1.03, 0.9]}
+          />
+          <mesh
+            name="Plane4"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane001.geometry}
+            material={materials.greeenscreen}
+            position={[-4.27, 2.75, -3.54]}
+            rotation={[Math.PI / 2, 0, -1.09]}
+            scale={[1.03, 1.01, 0.87]}
+          />
+          <mesh
+            name="Plane5"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane007.geometry}
+            material={materials.greeenscreen}
+            position={[7.76, 8.93, -5.15]}
+            rotation={[Math.PI / 2, 0, Math.PI / 3]}
+            scale={[1, 1, 0.92]}
+          />
+          <mesh
+            name="Plane6"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane.geometry}
+            material={materials.greeenscreen}
+            position={[0.52, 4.04, -6.91]}
+            rotation={[1.59, 0, 0]}
+            scale={1.03}
+          />
+          <mesh
+            name="Plane7"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane003.geometry}
+            material={materials.greeenscreen}
+            position={[-5.42, 6.73, -0.51]}
+            rotation={[-Math.PI / 2, 0, 1.22]}
+            scale={[0.97, 1, 0.73]}
+          />
+          <mesh
+            name="Plane8"
+            castShadow
+            receiveShadow
+            geometry={nodes.Plane006.geometry}
+            material={materials.greeenscreen}
+            position={[5.15, 5.06, -2.92]}
+            rotation={[Math.PI / 2, 0, 0.79]}
+            scale={[0.85, 0.85, 0.69]}
+          />
+        </group>
       </Select>
       <mesh
         castShadow
@@ -2223,15 +2258,6 @@ export function Model(props) {
       <mesh
         castShadow
         receiveShadow
-        geometry={nodes.Plane003.geometry}
-        material={materials.greeenscreen}
-        position={[-5.42, 6.73, -0.51]}
-        rotation={[-Math.PI / 2, 0, 1.22]}
-        scale={[0.97, 1, 0.73]}
-      />
-      <mesh
-        castShadow
-        receiveShadow
         geometry={nodes.PC_03002.geometry}
         material={materials.Texture}
         position={[0.37, 5.36, -7.63]}
@@ -2265,15 +2291,7 @@ export function Model(props) {
         rotation={[0, -0.44, 0]}
         scale={[2.53, 1.69, 2.53]}
       />
-      <mesh
-        castShadow
-        receiveShadow
-        geometry={nodes.Plane006.geometry}
-        material={materials.greeenscreen}
-        position={[5.15, 5.06, -2.92]}
-        rotation={[Math.PI / 2, 0, 0.79]}
-        scale={[0.85, 0.85, 0.69]}
-      />
+
       <mesh
         castShadow
         receiveShadow
@@ -3276,6 +3294,14 @@ function Screen({ frame, panel, children, ...props }) {
     </group>
   );
 }
+
+/*
+geometry={nodes.Plane004.geometry}
+          material={materials.greeenscreen}
+          position={[3.07, 2.26, -5.51]}
+          rotation={[Math.PI / 2, 0, Math.PI / 9]}
+          scale={[1.12, 1.02, 0.85]}
+*/
 /* Renders a monitor with some text */
 function ScreenText({ invert, x = 0, y = 1, ...props }) {
   const textRef = useRef();

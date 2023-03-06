@@ -27,8 +27,15 @@ import { editable as e, SheetProvider, PerspectiveCamera } from "@theatre/r3f";
 // our Theatre.js project sheet, we'll use this later
 const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
 
-export default function Viewer() {
+export default function App() {
   const ref = useRef();
+
+  const [selectedMeshName, setSelectedMeshName] = useState("");
+  const onMeshClick = (mesh) => {
+    setSelectedMeshName(mesh.name);
+    console.log(mesh.name);
+    // other logic to zoom in or perform other actions on the selected mesh
+  };
   return (
     <Canvas
       shadows
@@ -70,10 +77,10 @@ export default function Viewer() {
             castShadow
             shadow-mapSize={512}
           />
-          <Bounds>
+          <Bounds observe margin={1.2}>
             <Selection>
               <SelectToZoom>
-                <Model />
+                <Model SelectToZoom={onMeshClick} />
               </SelectToZoom>
             </Selection>
           </Bounds>
@@ -102,14 +109,17 @@ export default function Viewer() {
           </EffectComposer>
         </SheetProvider>
         <BakeShadows />
-        <Movable />
       </Suspense>
     </Canvas>
   );
 }
 
 function Movable() {
+  const [enabled, setEnabled] = useState(true);
+
   useFrame((state, delta) => {
+    if (!enabled) return; // if not enabled, skip the parallax
+
     easing.damp3(
       state.camera.position,
       [
@@ -118,30 +128,61 @@ function Movable() {
         7
       ],
       0.5,
-      0.08
+      delta
     );
   });
-}
 
+  return null; // Movable doesn't need to return any elements
+}
 // This component wraps children in a group with a click handler
 // Clicking any object will refresh and fit bounds
 function SelectToZoom({ children }) {
   const api = useBounds();
   const [selectedObjectName, setSelectedObjectName] = useState("");
-
+  console.log(children.type);
+  const [selectedMeshName, setSelectedMeshName] = useState("");
+  const [movableEnabled, setMovableEnabled] = useState(true);
+  const onMeshClick = (mesh) => {
+    setSelectedMeshName(mesh.name);
+    console.log(mesh.name);
+  };
   return (
+    <group
+      onClick={(e) => {
+        e.stopPropagation();
+        if (e.object.type === "Mesh" && e.object.name.includes("Plane")) {
+          console.log("Yes!");
+          api.refresh(e.object).fit();
+          setMovableEnabled(false);
+        } else {
+          console.log("Quit!");
+          e.button === 0;
+          setMovableEnabled(true);
+        }
+      }}
+    >
+      {children}
+      {movableEnabled && <Movable />} // conditionally render the Movable
+      component
+    </group>
+  );
+}
+/*
     <>
-      <group
-        onClick={(e) => (
-          e.stopPropagation(),
-          setSelectedObjectName(e.object.name),
-          console.log(selectedObjectName),
-          api.refresh(e.object).fit()
-        )}
-        onPointerMissed={(e) => e.button === 0}
-      >
+          <group
+      onClick={(e) => {
+        e.stopPropagation();
+        if (e.object.type === "Mesh" && e.object.name.includes("Plane")) {
+          console.log("Yes!")
+          api.refresh(e.object).fit();
+        }
+      }}
+      onPointerMissed={(e) => e.button === 0}
+    >
+
         {children}
       </group>
     </>
   );
 }
+*/
