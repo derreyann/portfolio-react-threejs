@@ -1,0 +1,33 @@
+{
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "dependencies": {
+    "@react-three/drei": "9.13.2",
+    "@react-three/fiber": "8.2.2",
+    "@react-three/postprocessing": "2.7.0",
+    "@theatre/core": "0.6.0",
+    "@theatre/r3f": "0.6.0",
+    "@theatre/studio": "0.6.0",
+    "@types/three": "0.143.0",
+    "maath": "0.5.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "three": "0.143.0"
+  },
+  "devDependencies": {
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "start": "react-scripts start",
+    "test": "react-scripts test --env=jsdom"
+  },
+  "keywords": [],
+  "name": "big-portfolio-better",
+  "description": ""
+}
