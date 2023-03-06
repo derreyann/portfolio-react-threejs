@@ -17,7 +17,8 @@ import {
   DepthOfField,
   Selection,
   Select,
-  Outline
+  Outline,
+  Noise
 } from "@react-three/postprocessing";
 import { Model } from "./Model";
 import { getProject } from "@theatre/core";
@@ -29,7 +30,13 @@ const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
 export default function Viewer() {
   const ref = useRef();
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ fov: 50 }}>
+    <Canvas
+      shadows
+      width="128"
+      height="128"
+      dpr={[0.5, 1]}
+      camera={{ fov: 50 }}
+    >
       <color attach="background" args={["black"]} />
       <Suspense fallback={null}>
         <SheetProvider sheet={demoSheet}>
@@ -47,6 +54,7 @@ export default function Viewer() {
               0.045536966019567054
             ]}
             fov={44.39999999999997}
+            resolution={256}
           />
           <hemisphereLight intensity={0.15} groundColor="black" />
           <e.spotLight
@@ -60,7 +68,7 @@ export default function Viewer() {
             penumbra={1}
             intensity={1}
             castShadow
-            shadow-mapSize={1024}
+            shadow-mapSize={512}
           />
           <Bounds>
             <Selection>
@@ -69,7 +77,8 @@ export default function Viewer() {
               </SelectToZoom>
             </Selection>
           </Bounds>
-          <EffectComposer disableNormalPass>
+          <AdaptiveDpr pixelated />
+          <EffectComposer resolutionScale={0.24} disableNormalPass>
             <Bloom
               luminanceThreshold={0}
               mipmapBlur
@@ -89,10 +98,10 @@ export default function Viewer() {
               edgeStrength={100}
               width={500}
             />
+            <Noise opacity={0.05} />
           </EffectComposer>
         </SheetProvider>
         <BakeShadows />
-        <AdaptiveDpr />
         <Movable />
       </Suspense>
     </Canvas>
