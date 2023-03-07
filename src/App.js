@@ -1,6 +1,5 @@
 import React, { Suspense, useRef, useState } from "react";
 import { Canvas, useFrame, extend } from "@react-three/fiber";
-import ThreeMeshUI from "three-mesh-ui";
 import { easing } from "maath";
 import {
   OrbitControls,
