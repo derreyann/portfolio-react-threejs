@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Button and Text Example</title>
+  </head>
+  <body color="red">
+    <h1>Button and Text Example</h1>
+    <p>Click the button to display a message:</p>
+    <button onclick="displayMessage()">Click me!</button>
+    <p id="message"></p>
+
+    <script>
+      function displayMessage() {
+        document.getElementById("message").innerHTML = "Hello, world!";
+      }
+    </script>
+  </body>
+</html>
