@@ -3318,7 +3318,7 @@ useGLTF.preload("/new new new scene.gltf");
 */
 
 /* Taken from the monitor cube demo*/
-function ScreenInteractive(props, x = 0, y = 1.2) {
+function ScreenInteractive(props, x = 0, y = 1) {
   const [hovered2, hover2] = useState(false);
   const [clicked, click] = useState(false);
   const [textClicked, setTextClicked] = useState(false);
@@ -3329,10 +3329,10 @@ function ScreenInteractive(props, x = 0, y = 1.2) {
       <PerspectiveCamera
         makeDefault
         manual
-        aspect={1 / 0.1}
+        aspect={1 / 1}
         position={[0, 0, 10]}
       />
-      <color attach="background" args={["hotpink"]} />
+      <color attach="background" args={["#b9ee8b"]} />
       <ambientLight intensity={0.2} />
       <pointLight position={[10, 10, 10]} intensity={0.75} />
       <pointLight position={[-10, -10, -10]} />
@@ -3347,12 +3347,12 @@ function ScreenInteractive(props, x = 0, y = 1.2) {
         position={[0, -0.5, 0]}
         rotation={[-Math.PI, 0, 0]}
         fontSize={3}
-        letterSpacing={-0.04}
-        color={hovered2 ? "white" : "black"}
+        letterSpacing={-0.0}
+        color={hovered2 ? "#b75722" : "black"}
         maxWidth={2}
         whiteSpace="break-word"
       >
-        yann works
+        hi there
       </Text>
     </Screen>
   );
