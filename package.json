@@ -6,6 +6,8 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@headlessui/react": "1.7.13",
+    "@heroicons/react": "1.0.6",
     "@react-three/drei": "9.13.2",
     "@react-three/fiber": "8.2.2",
     "@react-three/postprocessing": "2.7.0",
