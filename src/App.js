@@ -132,8 +132,8 @@ function Movable() {
     easing.damp3(
       state.camera.position,
       [
-        -1 + (state.pointer.x * state.viewport.width) / 4,
-        (2 + state.pointer.y) / 1,
+        -1 + (-state.pointer.x * state.viewport.width) / 4,
+        (2 - state.pointer.y) / 1,
         7
       ],
       0.5,
