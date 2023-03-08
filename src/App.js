@@ -32,7 +32,7 @@ import {
 import { Model } from "./Model";
 import { getProject } from "@theatre/core";
 import { editable as e, SheetProvider, PerspectiveCamera } from "@theatre/r3f";
-
+import * as THREE from "three"
 // our Theatre.js project sheet, we'll use this later
 const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
 
@@ -50,7 +50,7 @@ export default function App() {
       shadows
       width="128"
       height="128"
-      dpr={[0.5, 1]}
+      dpr={[0.3, 1]}
       camera={{ fov: 50 }}
     >
       <color attach="background" args={["black"]} />
@@ -60,17 +60,18 @@ export default function App() {
             theatreKey="Camera"
             makeDefault
             position={[
-              -1.4282351749863542,
-              1.9280055012114659,
-              5.387221232059973
+              -1.4235082949646687,
+              0.20562504834542494,
+              12.610933351075456
             ]}
             rotation={[
-              0.3854694407877629,
-              -0.18858033039394448,
-              0.045536966019567054
+              0.3788855445285419,
+              -0.05488506456904811,
+              -0.008547619429015501
             ]}
             fov={44.39999999999997}
-            resolution={256}
+            resolution={128}
+            lookAt={(0, 0, 0)}
           />
           <hemisphereLight intensity={0.15} groundColor="black" />
           <e.spotLight
@@ -94,12 +95,12 @@ export default function App() {
             </Selection>
           </Bounds>
           <AdaptiveDpr pixelated />
-          <EffectComposer resolutionScale={0.24} disableNormalPass>
+          <EffectComposer resolutionScale={0.10} disableNormalPass>
             <Bloom
               luminanceThreshold={0}
               mipmapBlur
               luminanceSmoothing={0.0}
-              intensity={4}
+              intensity={5}
             />
             <DepthOfField
               target={[7.7609, 8.6284, -5.1878]}
@@ -125,22 +126,22 @@ export default function App() {
 
 function Movable() {
   const [enabled, setEnabled] = useState(true);
-
+  const target = new THREE.Vector3(0, 2, 0); //
   useFrame((state, delta) => {
     if (!enabled) return; // if not enabled, skip the parallax
 
     easing.damp3(
       state.camera.position,
       [
-        -1 + (-state.pointer.x * state.viewport.width) / 4,
-        (2 - state.pointer.y) / 1,
+        -1 + (state.pointer.x * state.viewport.width)*0.5,
+        (2 + state.pointer.y) / 2,
         7
       ],
       0.5,
       delta
-    );
-  });
+      );
 
+  });
   return null; // Movable doesn't need to return any elements
 }
 // This component wraps children in a group with a click handler
