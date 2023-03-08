@@ -165,6 +165,7 @@ function SelectToZoom({ children }) {
         e.stopPropagation();
         setObjectTexture(e.object.material);
         setSelectedMeshName(e.object);
+        i++
         if (
           (e.object.type === "Mesh" && e.object.name.includes("Plane")) ||
           e.object.name.includes("named")
@@ -173,9 +174,9 @@ function SelectToZoom({ children }) {
           api.refresh(e.object).fit();
           setMovableEnabled(false);
           if (e.object.name === "named") {
-            if (i) {
+            if (i===1) {
               window.open(
-                "https://lh3.googleusercontent.com/qGuzCBLELUWfUdSrptNl3-uIGaI012q4SON8eqzqHz2CWj45KJsK5U_MZqoJgGTcCWFgmO_Srt33_3g4QZQUaqOuAfJyCpFIznUoJWThQAekmaPRM9RaD8z5pMJLVV1IyCrMao8wPHQfErQyjndJsoPh3bjIxFkwMAovExOVBhXuftvnGooBnO101PSG7gQs8F8QJH__36QCGyQHcHHFAiK6acozvpKhIyoQ6nbI1kcIDcgOhwkdVd3pb4UyIoIBUt_KkIZBOPDjaFUjWtwtrM5mVCw-MWoyyua-T0KXWkBfONj6GyNeuIFkxViDGTwvNIVNLHLlRIe0XqS1nw0Qp4RxyKwKgdmQFigTPxrDXGe_l_Q-XoA2bKG7blZ9zwqgAIqkPwpRHllBV5nhvWnbdLkKgMztKpkUrxPPw4u_lQIJJnMacsNPfn-nV1C6c1jaZ906H3x5fEeudq3KYg1KfzKx6UlgGe7w3SKFgmp0lmkQ-xGeez_uiUa_GTNczvYXwO5YESvRyAj5pK6rzqn9izFjlaUGU-CqCHGyv8CrKT9icIcPlgsmZv_jW2HQQ9E7IPWilsZK-5pRgCoRlho1QCNVa-kQor2esxZeQTiDkR8FcJNdEodXnWKFE_jcZUEbcdrkS2JD2Zv37wydBULl7JTAQUdXn5x4VGpirVAQIZmz9-hhMBYCgpo4T1EgF7vwwu8v7l3LFQRd_kuUrM0z0uOCIh5rZomRbtcBUXnEaJJ_2FjWjNTYX7sBVGQrAoVgnWmdtggez7n5yD1h7yKCkorJGE3fKbp_1YAuj9TGPTL7l3ClIlPY5vLVxOkRe7v9P3BpBqwquXMTCoHpJWOzaEkDff0rIbgaaahsWsVqf1hqr832X8IwLbsv3Xk8SKD4bRFuG79H8L2wo8BKOto2u4clexxH0PLD6NiyMZ4u4M3gmq14zQ=w733-h693-no?authuser=0",
+                "https://www.linkedin.com/in/yannderre/",
                 "_blank"
               );
             }
@@ -204,7 +205,7 @@ function SelectToZoom({ children }) {
             console.log(texture);
             
             setObjectTexture(e.object.material);
-            setSelectedMeshName(e.object);
+            setSelectedMeshName(e.object); 
             // Render the HTML as a texture on the plane
             //const texture = new TextureLoader().load(`data:text/html;charset=utf-8,${escape(html)}`);
 
