@@ -3399,8 +3399,8 @@ function ImageScreen(props, x = 0, y = 1) {
   const [clicked, setClicked] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const textures = [
-    useTexture("/image1.jpg"),
-    useTexture("/image2.jpg"),
+    useTexture("./image1.jpg"),
+    useTexture("./image2.jpg"),
   ];
 
   // Automatically switch between images
