@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState } from "react";
+import React, { Suspense, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, extend } from "@react-three/fiber";
 import { easing } from "maath";
 import {
@@ -127,12 +127,33 @@ export default function App() {
 function Movable() {
   const [enabled, setEnabled] = useState(true);
   const target = new THREE.Vector3(0, 2, 0); //
+  const [landscapeMode, setLandscapeMode] = useState(getLandscapeMode());
+
+   useFrame(() => {
+    function handleOrientationChange() {
+      setLandscapeMode(getLandscapeMode());
+    }
+    function handleResize() {
+      setLandscapeMode(getLandscapeMode());
+    }
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleOrientationChange);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleOrientationChange);
+    };
+  }, []);
+
+  function getLandscapeMode() {
+    const mql = window.matchMedia('(orientation: landscape)');
+    return mql.matches;
+  }
+  const dampingFactor = landscapeMode ? 6 : 0.76;
+
+console.log(landscapeMode);
   useFrame((state, delta) => {
     if (!enabled) return; // if not enabled, skip the parallax
-
-    const landscapeMode = window.screen.orientation.type.includes('landscape');
-
-    const dampingFactor = landscapeMode ? 6 : 0.8;
 
 
     easing.damp3(
