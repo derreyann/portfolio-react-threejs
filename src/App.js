@@ -130,11 +130,16 @@ function Movable() {
   useFrame((state, delta) => {
     if (!enabled) return; // if not enabled, skip the parallax
 
+    const landscapeMode = window.screen.orientation.type.includes('landscape');
+
+    const dampingFactor = landscapeMode ? 6 : 0.8;
+
+
     easing.damp3(
       state.camera.position,
       [
-        -1 + (state.pointer.x * state.viewport.width)*0.5,
-        (2 + state.pointer.y) / 2,
+        -1 + (state.pointer.x * state.viewport.width)/dampingFactor,
+        (2 + state.pointer.y) / 4,
         7
       ],
       0.5,
