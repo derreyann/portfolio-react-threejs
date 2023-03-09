@@ -151,7 +151,7 @@ function Movable() {
   }
   const dampingFactor = landscapeMode ? 6 : 0.76;
 
-console.log(landscapeMode);
+//console.log(landscapeMode);
   useFrame((state, delta) => {
     if (!enabled) return; // if not enabled, skip the parallax
 
@@ -176,7 +176,7 @@ function SelectToZoom({ children }) {
   const api = useBounds();
   var i = 0;
   const [selectedObjectName, setSelectedObjectName] = useState("");
-  console.log(children.type);
+  //console.log(children.type);
   const [selectedMeshName, setSelectedMeshName] = useState("");
   const [ObjectTexture, setObjectTexture] = useState("");
   const [movableEnabled, setMovableEnabled] = useState(true);
@@ -187,7 +187,7 @@ function SelectToZoom({ children }) {
   return (
     <group
       onClick={(e) => {
-        console.log(e.object.name);
+        //console.log(e.object.name);
         e.stopPropagation();
         setObjectTexture(e.object.material);
         setSelectedMeshName(e.object);
