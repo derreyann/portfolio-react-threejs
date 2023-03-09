@@ -99,8 +99,8 @@ export default function App() {
             <Bloom
               luminanceThreshold={0}
               mipmapBlur
-              luminanceSmoothing={0.0}
-              intensity={3}
+              luminanceSmoothing={2.0}
+              intensity={3.5}
             />
             <DepthOfField
               target={[7.7609, 8.6284, -5.1878]}
