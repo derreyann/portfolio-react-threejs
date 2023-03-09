@@ -3315,20 +3315,6 @@ export function Model({ props, SelectToZoom }) {
 
 useGLTF.preload("/new new new scene.gltf");
 
-/*
-<mesh
-            name="Plane1"
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
-            castShadow
-            receiveShadow
-            geometry={nodes.Plane004.geometry}
-            material={materials.greeenscreen}
-            position={[3.07, 2.26, -5.51]}
-            rotation={[Math.PI / 2, 0, Math.PI / 9]}
-            scale={[1.12, 1.02, 0.85]}
-          />
-*/
 
 /* Taken from the monitor cube demo*/
 function ScreenInteractive(props, x = 0, y = 1) {
