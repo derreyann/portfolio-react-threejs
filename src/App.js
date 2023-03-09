@@ -200,7 +200,7 @@ function SelectToZoom({ children }) {
           api.refresh(e.object).fit();
           setMovableEnabled(false);
           if (e.object.name === "named") {
-            if (i===1) {
+            if (i===1 && !movableEnabled) {
               window.open(
                 "https://www.linkedin.com/in/yannderre/",
                 "_blank"
