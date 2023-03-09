@@ -11,7 +11,8 @@ import {
   useBounds,
   AdaptiveDpr,
   useCursor,
-  RenderTexture
+  RenderTexture,
+  Loader
 } from "@react-three/drei";
 import {
   TextureLoader,
@@ -38,14 +39,14 @@ const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
 
 export default function App() {
   const ref = useRef();
-
+  
   const [selectedMeshName, setSelectedMeshName] = useState("");
   const onMeshClick = (mesh) => {
     setSelectedMeshName(mesh.name);
     console.log(mesh.name);
-    // other logic to zoom in or perform other actions on the selected mesh
   };
   return (
+    <>
     <Canvas
       shadows
       width="128"
@@ -53,8 +54,7 @@ export default function App() {
       dpr={[0.3, 1]}
       camera={{ fov: 50 }}
     >
-      <color attach="background" args={["black"]} />
-      <Suspense fallback={null}>
+      <color attach="background" args={["black"]} />      <Suspense fallback={null}>
         <SheetProvider sheet={demoSheet}>
           <PerspectiveCamera
             theatreKey="Camera"
@@ -99,7 +99,7 @@ export default function App() {
             <Bloom
               luminanceThreshold={0}
               mipmapBlur
-              luminanceSmoothing={2.0}
+              luminanceSmoothing={1.0}
               intensity={3.5}
             />
             <DepthOfField
@@ -121,6 +121,8 @@ export default function App() {
         <BakeShadows />
       </Suspense>
     </Canvas>
+    <Loader/>
+    </> 
   );
 }
 
