@@ -1,6 +1,7 @@
 import React, { Suspense, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, extend } from "@react-three/fiber";
 import { easing } from "maath";
+import HeroPage from './HeroPage';
 import {
   OrbitControls,
   Stage,
@@ -12,7 +13,8 @@ import {
   AdaptiveDpr,
   useCursor,
   RenderTexture,
-  Loader
+  Loader,
+  Html
 } from "@react-three/drei";
 import {
   TextureLoader,
@@ -36,10 +38,11 @@ import { editable as e, SheetProvider, PerspectiveCamera } from "@theatre/r3f";
 import * as THREE from "three"
 // our Theatre.js project sheet, we'll use this later
 const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
-
 export default function App() {
   const ref = useRef();
-  
+  const [movableEnabled, setMovableEnabled] = useState(true);
+
+
   const [selectedMeshName, setSelectedMeshName] = useState("");
   const onMeshClick = (mesh) => {
     setSelectedMeshName(mesh.name);
@@ -47,82 +50,77 @@ export default function App() {
   };
   return (
     <>
-    <Canvas
-      shadows
-      width="128"
-      height="128"
-      dpr={[0.3, 1]}
-      camera={{ fov: 50 }}
-    >
-      <color attach="background" args={["black"]} />      <Suspense fallback={null}>
-        <SheetProvider sheet={demoSheet}>
-          <PerspectiveCamera
-            theatreKey="Camera"
-            makeDefault
-            position={[
-              -1.4235082949646687,
-              0.20562504834542494,
-              12.610933351075456
-            ]}
-            rotation={[
-              0.3788855445285419,
-              -0.05488506456904811,
-              -0.008547619429015501
-            ]}
-            fov={44.39999999999997}
-            resolution={128}
-            lookAt={(0, 0, 0)}
-          />
-          <hemisphereLight intensity={0.15} groundColor="black" />
-          <e.spotLight
-            theatreKey="Light"
-            position={[
-              -7.321508953834595,
-              134.55811607486405,
-              -41.339696743147556
-            ]}
-            angle={0.12}
-            penumbra={1}
-            intensity={1}
-            castShadow
-            shadow-mapSize={512}
-          />
-          <Bounds observe margin={1.2}>
-            <Selection>
-              <SelectToZoom>
-                <Model SelectToZoom={onMeshClick} />
-              </SelectToZoom>
-            </Selection>
-          </Bounds>
-          <AdaptiveDpr pixelated />
-          <EffectComposer resolutionScale={0.10} disableNormalPass>
-            <Bloom
-              luminanceThreshold={0}
-              mipmapBlur
-              luminanceSmoothing={1.0}
-              intensity={3.5}
+      <Canvas
+        shadows
+        width="128"
+        height="128"
+        dpr={[0.3, 1]}
+        camera={{ fov: 50 }}
+      >
+        <color attach="background" args={["black"]} />      <Suspense fallback={null}>
+          <SheetProvider sheet={demoSheet}>
+            <PerspectiveCamera
+              theatreKey="Camera"
+              makeDefault
+              position={[
+                -1.4235082949646687,
+                0.20562504834542494,
+                12.610933351075456
+              ]}
+              rotation={[
+                0.3788855445285419,
+                -0.05488506456904811,
+                -0.008547619429015501
+              ]}
+              fov={44.39999999999997}
+              resolution={128}
+              lookAt={(0, 0, 0)}
             />
-            <DepthOfField
-              target={[7.7609, 8.6284, -5.1878]}
-              focalLength={0.01}
-              bokehScale={15}
-              height={300}
+            <hemisphereLight intensity={0.15} groundColor="black" />
+            <e.spotLight
+              theatreKey="Light"
+              position={[
+                -7.321508953834595,
+                134.55811607486405,
+                -41.339696743147556
+              ]}
+
+              angle={0.12}
+              penumbra={1}
+              intensity={1}
+              castShadow
+              shadow-mapSize={512}
             />
-            <Outline
-              blur
-              visible
-              EdgeColor="green"
-              edgeStrength={100}
-              width={500}
-            />
-            <Noise opacity={0.05} />
-          </EffectComposer>
-        </SheetProvider>
-        <BakeShadows />
-      </Suspense>
-    </Canvas>
-    <Loader/>
-    </> 
+            <Bounds observe margin={1.2}>
+              <Selection>
+                <SelectToZoom setMovableEnabled={setMovableEnabled} movableEnabled={movableEnabled}>
+                  <Model SelectToZoom={onMeshClick} movableEnabled={movableEnabled}/>
+                </SelectToZoom>
+              </Selection>
+            </Bounds>
+            <AdaptiveDpr pixelated />
+            <EffectComposer resolutionScale={0.10} disableNormalPass>
+              <Bloom
+                luminanceThreshold={0}
+                mipmapBlur
+                luminanceSmoothing={1.0}
+                intensity={3.5}
+              />
+              <DepthOfField
+                target={[7.7609, 8.6284, -5.1878]}
+                focalLength={0.01}
+                bokehScale={15}
+                height={300}
+              />
+
+              <Noise opacity={0.05} />
+            </EffectComposer>
+          </SheetProvider>
+          <BakeShadows />
+        </Suspense>
+      </Canvas>
+      <Loader />
+    </>
   );
 }
 
@@ -131,7 +129,7 @@ function Movable() {
   const target = new THREE.Vector3(0, 2, 0); //
   const [landscapeMode, setLandscapeMode] = useState(getLandscapeMode());
 
-   useFrame(() => {
+  useFrame(() => {
     function handleOrientationChange() {
       setLandscapeMode(getLandscapeMode());
     }
@@ -153,7 +151,7 @@ function Movable() {
   }
   const dampingFactor = landscapeMode ? 6 : 0.76;
 
-//console.log(landscapeMode);
+  //console.log(landscapeMode);
   useFrame((state, delta) => {
     if (!enabled) return; // if not enabled, skip the parallax
 
@@ -161,27 +159,27 @@ function Movable() {
     easing.damp3(
       state.camera.position,
       [
-        -1 + (state.pointer.x * state.viewport.width)/dampingFactor,
+        -1 + (state.pointer.x * state.viewport.width) / dampingFactor,
         (2 + state.pointer.y) / 4,
         7
       ],
       0.5,
       delta
-      );
+    );
 
   });
   return null; // Movable doesn't need to return any elements
 }
 // This component wraps children in a group with a click handler
 // Clicking any object will refresh and fit bounds
-function SelectToZoom({ children }) {
+function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
   const api = useBounds();
   var i = 0;
   const [selectedObjectName, setSelectedObjectName] = useState("");
   //console.log(children.type);
   const [selectedMeshName, setSelectedMeshName] = useState("");
+  const [movableEnabled2, setMovableEnabled2] = useState("");
   const [ObjectTexture, setObjectTexture] = useState("");
-  const [movableEnabled, setMovableEnabled] = useState(true);
   const onMeshClick = (mesh) => {
     setSelectedMeshName(mesh.name);
     console.log(mesh.name);
@@ -193,16 +191,20 @@ function SelectToZoom({ children }) {
         e.stopPropagation();
         setObjectTexture(e.object.material);
         setSelectedMeshName(e.object);
+        //console.log(e);
         i++
+        //console.log(e);
         if (
           (e.object.type === "Mesh" && e.object.name.includes("Plane")) ||
           e.object.name.includes("named")
         ) {
           console.log("Yes!");
           api.refresh(e.object).fit();
-          setMovableEnabled(false);
+          
+          setMovableEnabled2(false);
+          
           if (e.object.name === "named") {
-            if (i===1 && !movableEnabled) {
+            if (i === 1 && !movableEnabled2) {
               window.open(
                 "https://www.linkedin.com/in/yannderre/",
                 "_blank"
@@ -250,7 +252,8 @@ function SelectToZoom({ children }) {
           /*selectedMeshName.material = ObjectTexture;
           selectedMeshName.material.needsUpdate = true;
           */
-          setMovableEnabled(true);
+          setMovableEnabled2(true);
+          //setMovableEnabled(true);
           e.button === 0;
           i = 0;
           console.log(i);
@@ -258,7 +261,7 @@ function SelectToZoom({ children }) {
       }}
     >
       {children}
-      {movableEnabled && <Movable />} // conditionally render the Movable
+      {movableEnabled2 && <Movable />} // conditionally render the Movable
       component
     </group>
   );

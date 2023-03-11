@@ -34,14 +34,21 @@ import {
   Outline
 } from "@react-three/postprocessing";
 
-export function Model({ props, SelectToZoom }) {
+export function Model({ props, SelectToZoom, movableEnabled }) {
   const { nodes, materials } = useGLTF("/new new new scene.gltf");
+  const [Inside, setInside] = useState("");
   const [hovered, hover] = useState(null);
   const [Name, setName] = useState(null);
   const groupRef = useRef();
   const handleClick = (e) => {
     if (e.object.type === "Mesh") {
       SelectToZoom(e.object);
+      if (
+        (e.object.type === "Mesh" && e.object.name.includes("Plane")) ||
+        e.object.name.includes("named")) {
+        console.log("inside")
+        setInside(true)
+      }
     }
   };
   const onMeshClick = (mesh) => {
@@ -3297,6 +3304,8 @@ export function Model({ props, SelectToZoom }) {
         scale={0.84}
       />
       <ImageScreen
+        movable={movableEnabled}
+        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
         frame="Plane002"
         panel="Plane002"
         position={[-2.06, 5.92, -5.67]}
@@ -3311,6 +3320,8 @@ export function Model({ props, SelectToZoom }) {
         rotation={[Math.PI / 2, 0, Math.PI / 9]}
       />
       <ImageScreen
+        movable={movableEnabled}
+        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
         frame="Plane005"
         panel="Plane005"
         position={[1.71, 8.89, -9.59]}
@@ -3318,6 +3329,8 @@ export function Model({ props, SelectToZoom }) {
         scale={[1.07, 1, 0.87]}
       />
       <ImageScreen
+        movable={movableEnabled}
+        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
         frame="Plane001"
         panel="Plane001"
         geometry={nodes.Plane001.geometry}
@@ -3327,6 +3340,8 @@ export function Model({ props, SelectToZoom }) {
         scale={[1.03, 1.01, 0.87]}
       />
       <ImageScreen
+        movable={movableEnabled}
+        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
         frame="Plane007"
         panel="Plane007"
         position={[7.76, 8.93, -5.15]}
@@ -3334,6 +3349,8 @@ export function Model({ props, SelectToZoom }) {
         scale={[1, 1, 0.92]}
       />
       <ImageScreen
+        movable={movableEnabled}
+        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
         frame="Plane"
         panel="Plane"
         position={[0.52, 4.04, -6.91]}
@@ -3341,30 +3358,29 @@ export function Model({ props, SelectToZoom }) {
         scale={1.03}
       />
       <ImageScreen
-        frame="Plane003"
-        panel="Plane003"
-        position={[-5.42, 6.73, -0.51]}
-        rotation={[-Math.PI / 2, 0, 1.22]}
-        scale={[0.97, 1, 0.73]}
-      />
-      <Html name="named" position={[5.15, 5.06, -2.92]}
-        rotation={[0, -Math.PI/4, 0]}
-        scale={0.1} occlude="blending" distanceFactor={5} transform geometry={nodes.Plane006.geometry}>
-        <div className="wrapper" onPointerDown={(e) => e.stopPropagation()}>
-          <HeroPage />
-        </div>
-      </Html>
+        inside={Inside}
+        movable={movableEnabled}
+        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+        frame="Plane006"
+        panel="Plane006"
+        position={[5.15, 5.06, -2.92]}
+        rotation={[Math.PI / 2, 0, 0.79]}
+        scale={[0.85, 0.85, 0.69]}
+      />*/
+
     </group>
   );
 }
-/*
-<ImageScreen
-  frame="Plane006"
-  panel="Plane006"
-  position={[5.15, 5.06, -2.92]}
-  rotation={[Math.PI / 2, 0, 0.79]}
-  scale={[0.85, 0.85, 0.69]}
+/*<ImageScreen
+  movable={movableEnabled}
+  imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+  frame="Plane003"
+  panel="Plane003"
+  position={[-5.42, 6.70, -0.50]}
+  rotation={[-Math.PI / 2, 0, 1.22]}
+  scale={[0.97, 1, 0.73]}
 />*/
+
 useGLTF.preload("/new new new scene.gltf");
 
 
@@ -3430,7 +3446,7 @@ function Screen({ named, frame, panel, children, ...props }) {
   );
 }
 
-
+/*
 
 function ImageScreen(props, x = 0, y = 1) {
   const [hovered, setHovered] = useState(false);
@@ -3448,6 +3464,7 @@ function ImageScreen(props, x = 0, y = 1) {
     }, 250);
     return () => clearInterval(interval);
   }, [imageIndex, textures.length]);
+ 
 
   return (
     <Screen {...props}>
@@ -3480,5 +3497,109 @@ function ImageScreen(props, x = 0, y = 1) {
         />
       </mesh>
     </Screen>
+  );
+}
+ */
+function ImageScreen({ imageUrls, movable, inside, ...props }) {
+
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  const [imageIndex, setImageIndex] = useState(!inside ? 0 : 1);
+  const textures = imageUrls.map((imageUrl) => {
+    const texture = useTexture(imageUrl);
+    texture.flipY = false; // Flip texture along the Y-axis
+    return texture;
+  });
+
+  useEffect(() => {
+    if (clicked) {
+      if (!inside && imageIndex === textures.length - 1) {
+        setImageIndex(1);
+      } else if (inside && imageIndex === textures.length - 1) {
+        setImageIndex(1);
+      } else {
+        setImageIndex((imageIndex + 1) % textures.length);
+      }
+      setClicked(false);
+    }
+  }, [clicked, imageIndex, movable, textures.length]);
+
+
+
+  useEffect(() => {
+    if (inside) { // if movable is disabled
+      setImageIndex(imageIndex === 0 ? 1 : imageIndex); // check current index and set it to 1 if it's 0, otherwise keep the same index
+    } else { // if movable is enabled
+      setTimeout(() => {
+        setImageIndex(0);
+      }, 100); // go back to the first picture
+    }
+  }, [movable]);
+  return (
+    <Screen {...props}>
+      <PerspectiveCamera
+        makeDefault
+        manual
+        aspect={1 / 1}
+        position={[0, 0, 2]}
+        rotation={[0, 0, 0]}
+      />
+      <color attach="background" args={["#b9ee8b"]} />
+      <ambientLight intensity={0.2} />
+      <pointLight position={[10, 10, 10]} intensity={0.75} />
+      <pointLight position={[-10, -10, -10]} />
+
+      <mesh
+        rotation={[0, 0, 0]}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        onPointerDown={() => {
+          setClicked(!clicked);
+          console.log("clicked")
+        }}
+      >
+        <planeBufferGeometry args={[2, 2]} />
+        <meshBasicMaterial
+          attach="material"
+          map={textures[imageIndex]}
+          color={hovered ? "gray" : "white"}
+          opacity={clicked ? 0.5 : 1}
+          reflectivity={0.5}
+          transparent={true}
+          needsUpdate={true}
+        />
+      </mesh>
+      <RedMesh position={[0.65, 0.55, 0]} />
+    </Screen>
+  );
+}
+
+function RedMesh(props) {
+  const [hovered, setHovered] = useState(false);
+
+  const handleClick = () => {
+    window.open(
+      "https://www.linkedin.com/in/yannderre/",
+      "_blank");
+  };
+
+  return (
+    <mesh
+      {...props}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      onPointerDown={handleClick}
+      scale={[0.2, 0.2, 0.5]}
+    >
+      <planeBufferGeometry args={[2, 2]} />
+      <meshBasicMaterial
+
+        attach="material"
+        color={hovered ? "orange" : "black"}
+        opacity={hovered ? 0.5 : 1}
+        transparent={true}
+      />
+    </mesh>
   );
 }

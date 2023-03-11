@@ -10,6 +10,7 @@ function App() {
       <form>
         <div className="logo">
           <textarea
+            name='named'
             className="input"
             value="joe"
           />
