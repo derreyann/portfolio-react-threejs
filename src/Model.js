@@ -3612,7 +3612,7 @@ function ImageScreen({ imageUrls, movable, inside, webUrl, ...props }) {
           needsUpdate={true}
         />
       </mesh>
-      <RedMesh webUrl={webUrl} position={[0.65, 0.55, 0]} />
+      <RedMesh webUrl={webUrl} position={[0.58, 0.62, 0]} />
     </Screen>
   );
 }
@@ -3647,7 +3647,7 @@ function RedMesh({ webUrl, ...props }) {
           webUrl, "_blank");
       }}
       //onClick={handleClick}
-      scale={[0.2, 0.2, 0.5]}
+      scale={[0.15, 0.15, 0.5]}
     >
       <planeBufferGeometry args={[2, 2]} />
       <meshBasicMaterial
@@ -3656,7 +3656,7 @@ function RedMesh({ webUrl, ...props }) {
           texture.flipY = false; // set flipY to false to flip the texture vertically
           texture.needsUpdate = true; // update the texture after changing the flipY property
         })}    
-        color={hovered ? "orange" : "black"}
+        color={hovered ? "orange" : "white"}
         opacity={hovered ? 0.5 : 1}
         transparent={true}
       />
