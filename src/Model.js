@@ -3584,7 +3584,7 @@ function RedMesh(props) {
   useEffect(() => {
     if (clicked) {
       window.open(
-        "https://www.linkedin.com/in/yannderre/", "mozillaTab");
+        "https://www.linkedin.com/in/yannderre/", "_blank");
       setClicked(false);
     }
   }, [clicked]);
@@ -3601,6 +3601,8 @@ function RedMesh(props) {
       onPointerUp={() => {
         setClicked(!clicked);
         console.log("clicked")
+        window.open(
+          "https://www.linkedin.com/in/yannderre/", "_blank");
       }}
       //onClick={handleClick}
       scale={[0.2, 0.2, 0.5]}
