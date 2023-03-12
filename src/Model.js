@@ -3563,7 +3563,7 @@ function ImageScreen({ imageUrls, movable, inside, ...props }) {
         <meshBasicMaterial
           attach="material"
           map={textures[imageIndex]}
-          color={hovered ? "lightgray" : "white"}
+          color={hovered ? "gray" : "lightgray"}
           opacity={clicked ? 0.5 : 1}
           reflectivity={0.5}
           transparent={true}
