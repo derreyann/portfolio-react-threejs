@@ -3307,6 +3307,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         movable={movableEnabled}
         imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="http://www.google.com"
         frame="Plane002"
         panel="Plane002"
         position={[-2.06, 5.92, -5.67]}
@@ -3323,6 +3324,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         movable={movableEnabled}
         imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="http://www.google.com"
         frame="Plane005"
         panel="Plane005"
         position={[1.71, 8.89, -9.59]}
@@ -3332,6 +3334,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         movable={movableEnabled}
         imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="http://www.google.com"
         frame="Plane001"
         panel="Plane001"
         geometry={nodes.Plane001.geometry}
@@ -3343,6 +3346,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         movable={movableEnabled}
         imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="http://www.google.com"
         frame="Plane007"
         panel="Plane007"
         position={[7.76, 8.93, -5.15]}
@@ -3352,6 +3356,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         movable={movableEnabled}
         imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="http://www.google.com"
         frame="Plane"
         panel="Plane"
         position={[0.52, 4.04, -6.91]}
@@ -3361,6 +3366,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         inside={Inside}
         movable={movableEnabled}
+        webUrl="http://www.google.com"
         imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
         frame="Plane006"
         panel="Plane006"
@@ -3501,7 +3507,7 @@ function ImageScreen(props, x = 0, y = 1) {
   );
 }
  */
-function ImageScreen({ imageUrls, movable, inside, ...props }) {
+function ImageScreen({ imageUrls, movable, inside, webUrl, ...props }) {
 
   const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -3572,19 +3578,21 @@ function ImageScreen({ imageUrls, movable, inside, ...props }) {
           needsUpdate={true}
         />
       </mesh>
-      <RedMesh position={[0.65, 0.55, 0]} />
+      <RedMesh webUrl={webUrl} position={[0.65, 0.55, 0]} />
     </Screen>
   );
 }
 
-function RedMesh(props) {
+function RedMesh({ webUrl, ...props }) {
   const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
 
+  
   useEffect(() => {
+    console.log(webUrl);
     if (clicked) {
       window.open(
-        "https://www.linkedin.com/in/yannderre/", "_blank");
+        webUrl, "_blank");
       setClicked(false);
     }
   }, [clicked]);
@@ -3602,15 +3610,18 @@ function RedMesh(props) {
         setClicked(!clicked);
         console.log("clicked")
         window.open(
-          "https://www.linkedin.com/in/yannderre/", "_blank");
+          webUrl, "_blank");
       }}
       //onClick={handleClick}
       scale={[0.2, 0.2, 0.5]}
     >
       <planeBufferGeometry args={[2, 2]} />
       <meshBasicMaterial
-
         attach="material"
+        map={new THREE.TextureLoader().load('./redirect.png', (texture) => {
+          texture.flipY = false; // set flipY to false to flip the texture vertically
+          texture.needsUpdate = true; // update the texture after changing the flipY property
+        })}    
         color={hovered ? "orange" : "black"}
         opacity={hovered ? 0.5 : 1}
         transparent={true}

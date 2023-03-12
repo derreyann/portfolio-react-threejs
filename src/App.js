@@ -112,8 +112,8 @@ export default function App() {
               <DepthOfField
                 target={[7.7609, 8.6284, -5.1878]}
                 focalLength={0.01}
-                bokehScale={15}
-                height={300}
+                bokehScale={10}
+                height={500}
               />
 
               <Noise opacity={0.05} />
@@ -181,7 +181,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
   const [selectedObjectName, setSelectedObjectName] = useState("");
   //console.log(children.type);
   const [selectedMeshName, setSelectedMeshName] = useState("");
-  const [movableEnabled2, setMovableEnabled2] = useState("");
+  const [movableEnabled2, setMovableEnabled2] = useState(true);
   const [ObjectTexture, setObjectTexture] = useState("");
   const onMeshClick = (mesh) => {
     setSelectedMeshName(mesh.name);
