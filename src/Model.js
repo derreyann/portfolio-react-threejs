@@ -3306,7 +3306,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./portfolio.jpg", "./1.jpg", "./2.jpg"]}
+        imageUrls={["./portfolio.jpg", "./portfolio-1.jpg"]}
         webUrl="https://github.com/derreyann/portfolio-react-threejs"
         frame="Plane002"
         panel="Plane002"
@@ -3325,7 +3325,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         movable={movableEnabled}
         imageUrls={["./about.jpg", "./1.jpg", "./2.jpg"]}
-        webUrl="http://www.google.com"
+        webUrl="https://www.linkedin.com/in/yannderre/"
         frame="Plane005"
         panel="Plane005"
         position={[1.71, 8.89, -9.59]}
@@ -3334,7 +3334,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./icsexport.jpg", "./1.jpg", "./2.jpg"]}
+        imageUrls={["./icsexport.jpg", "./icsexport-1.jpg"]}
         webUrl="https://utbm.yann.works"
         frame="Plane001"
         panel="Plane001"
@@ -3356,7 +3356,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./IA41.jpg", "./1.jpg", "./2.jpg"]}
+        imageUrls={["./IA41.jpg", "./ia41-1.jpg"]}
         webUrl="https://github.com/derreyann/projet_IA41"
         frame="Plane"
         panel="Plane"

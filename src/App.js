@@ -209,7 +209,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
           if (e.object.name === "named") {
             if (i === 1 && !movableEnabled2) {
               window.open(
-                "https://www.linkedin.com/in/yannderre/",
+                "mailto:yann.derre@utbm.fr",
                 "_blank"
               );
             }
