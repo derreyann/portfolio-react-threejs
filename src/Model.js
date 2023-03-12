@@ -3306,8 +3306,8 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
-        webUrl="http://www.google.com"
+        imageUrls={["./portfolio.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="https://github.com/derreyann/portfolio-react-threejs"
         frame="Plane002"
         panel="Plane002"
         position={[-2.06, 5.92, -5.67]}
@@ -3315,6 +3315,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         scale={[1.08, 1.03, 0.9]}
       />
       <ScreenInteractive
+      
         frame="Plane004"
         panel="Plane004"
         position={[3.07, 2.2, -5.5]}
@@ -3323,7 +3324,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+        imageUrls={["./about.jpg", "./1.jpg", "./2.jpg"]}
         webUrl="http://www.google.com"
         frame="Plane005"
         panel="Plane005"
@@ -3333,20 +3334,20 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
-        webUrl="http://www.google.com"
+        imageUrls={["./icsexport.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="https://github.com/derreyann/utbm-schedule-exporter"
         frame="Plane001"
         panel="Plane001"
         geometry={nodes.Plane001.geometry}
         material={materials.greeenscreen}
-        position={[-4.27, 2.75, -3.54]}
+        position={[-4.26, 2.75, -3.54]}
         rotation={[Math.PI / 2, 0, -1.09]}
-        scale={[1.03, 1.01, 0.87]}
+        scale={[1.03, 1.01, 0.89]}
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
-        webUrl="http://www.google.com"
+        imageUrls={["./credits.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="https://github.com/derreyann/portfolio-react-threejs#credits"
         frame="Plane007"
         panel="Plane007"
         position={[7.76, 8.93, -5.15]}
@@ -3355,8 +3356,8 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
-        webUrl="http://www.google.com"
+        imageUrls={["./IA41.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="https://github.com/derreyann/projet_IA41"
         frame="Plane"
         panel="Plane"
         position={[0.52, 4.04, -6.91]}
@@ -3366,13 +3367,13 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         inside={Inside}
         movable={movableEnabled}
-        webUrl="http://www.google.com"
-        imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
+        webUrl="https://github.com/derreyann/projectLP25"
+        imageUrls={["./sql.jpg", "./1.jpg", "./2.jpg"]}
         frame="Plane006"
         panel="Plane006"
-        position={[5.15, 5.06, -2.92]}
+        position={[5.149, 5.06, -2.92]}
         rotation={[Math.PI / 2, 0, 0.79]}
-        scale={[0.85, 0.85, 0.69]}
+        scale={[0.9, 0.85, 0.69]}
       />*/
 
     </group>
@@ -3396,7 +3397,25 @@ function ScreenInteractive(props, x = 0, y = 1) {
   const [hovered2, hover2] = useState(false);
   const [clicked, click] = useState(false);
   const [textClicked, setTextClicked] = useState(false);
+  const [bgColor, setBgColor] = useState("black");
+  const [textColor, setTextColor] = useState("#b9ee8b");
+  const [displayText, setDisplayText] = useState("hire me");
+
   const ref = useRef();
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setBgColor((prevColor) =>
+        prevColor === "black" ? "black" : "black"
+      );
+      setTextColor((prevColor) => (prevColor === "#b9ee8b" ? "orange" : "#b9ee8b"));
+    
+      setDisplayText(displayText === "looking for" ? "internship sept. 2023" : "looking for");
+    }, 1500);
+    return () => clearInterval(intervalId);
+  }, [displayText]);
+
+
 
   return (
     <Screen {...props}>
@@ -3406,7 +3425,7 @@ function ScreenInteractive(props, x = 0, y = 1) {
         aspect={1 / 1}
         position={[0, 0, 10]}
       />
-      <color attach="background" args={["#b9ee8b"]} />
+      <color attach="background" args={[bgColor]} />
       <ambientLight intensity={0.2} />
       <pointLight position={[10, 10, 10]} intensity={0.75} />
       <pointLight position={[-10, -10, -10]} />
@@ -3417,16 +3436,31 @@ function ScreenInteractive(props, x = 0, y = 1) {
         onPointerOver={(event) => hover2(true)}
         onPointerOut={(event) => hover2(false)}
         onMouseUp={(event) => click(false)}
-        font="/Newake-Font-Demo.otf"
-        position={[0, -0.5, 0]}
+        font="./FragmentMono-Regular.ttf"
+        position={[0, -0.8, 0]}
         rotation={[-Math.PI, 0, 0]}
-        fontSize={3}
+        fontSize={1.25}
         letterSpacing={-0.0}
-        color={hovered2 ? "#b75722" : "black"}
-        maxWidth={2}
+        color={textColor}
+        maxWidth={1.75}
         whiteSpace="break-word"
       >
-        hire me
+         {displayText}
+      </Text>
+      <Text
+        pointerEvents="none"
+        ref={ref}
+        onPointerOver={(event) => hover2(true)}
+        onPointerOut={(event) => hover2(false)}
+        onMouseUp={(event) => click(false)}
+        font="./FragmentMono-Regular.ttf"
+        position={[1.5, 2.4, 0]}
+        rotation={[-Math.PI, 0, 0]}
+        fontSize={0.5}
+        letterSpacing={-0.0}
+        color={textColor}
+      >
+         (click here)
       </Text>
     </Screen>
   );
@@ -3540,7 +3574,7 @@ function ImageScreen({ imageUrls, movable, inside, webUrl, ...props }) {
     } else { // if movable is enabled
       setTimeout(() => {
         setImageIndex(0);
-      }, 5000); // go back to the first picture
+      }, 2000); // go back to the first picture
     }
   }, [hovered]);
   return (
