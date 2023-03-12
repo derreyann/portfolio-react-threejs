@@ -3368,7 +3368,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         inside={Inside}
         movable={movableEnabled}
         webUrl="https://github.com/derreyann/projectLP25"
-        imageUrls={["./sql.jpg", "./1.jpg", "./2.jpg"]}
+        imageUrls={["./SQL.jpg", "./1.jpg", "./2.jpg"]}
         frame="Plane006"
         panel="Plane006"
         position={[5.149, 5.06, -2.92]}
