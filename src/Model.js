@@ -3505,7 +3505,7 @@ function ImageScreen({ imageUrls, movable, inside, ...props }) {
   const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
 
-  const [imageIndex, setImageIndex] = useState(!inside ? 0 : 1);
+  const [imageIndex, setImageIndex] = useState(!hovered ? 0 : 1);
   const textures = imageUrls.map((imageUrl) => {
     const texture = useTexture(imageUrl);
     texture.flipY = false; // Flip texture along the Y-axis
@@ -3514,28 +3514,28 @@ function ImageScreen({ imageUrls, movable, inside, ...props }) {
 
   useEffect(() => {
     if (clicked) {
-      if (!inside && imageIndex === textures.length - 1) {
+      if (!hovered && imageIndex === textures.length - 1) {
         setImageIndex(1);
-      } else if (inside && imageIndex === textures.length - 1) {
+      } else if (hovered && imageIndex === textures.length - 1) {
         setImageIndex(1);
       } else {
         setImageIndex((imageIndex + 1) % textures.length);
       }
       setClicked(false);
     }
-  }, [clicked, imageIndex, movable, textures.length]);
+  }, [clicked, imageIndex, hovered, textures.length]);
 
 
 
   useEffect(() => {
-    if (inside) { // if movable is disabled
+    if (hovered) { // if movable is disabled
       setImageIndex(imageIndex === 0 ? 1 : imageIndex); // check current index and set it to 1 if it's 0, otherwise keep the same index
     } else { // if movable is enabled
       setTimeout(() => {
         setImageIndex(0);
-      }, 100); // go back to the first picture
+      }, 5000); // go back to the first picture
     }
-  }, [movable]);
+  }, [hovered]);
   return (
     <Screen {...props}>
       <PerspectiveCamera
@@ -3563,7 +3563,7 @@ function ImageScreen({ imageUrls, movable, inside, ...props }) {
         <meshBasicMaterial
           attach="material"
           map={textures[imageIndex]}
-          color={hovered ? "gray" : "white"}
+          color={hovered ? "lightgray" : "white"}
           opacity={clicked ? 0.5 : 1}
           reflectivity={0.5}
           transparent={true}

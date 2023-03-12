@@ -104,7 +104,8 @@ export default function App() {
                 luminanceThreshold={0}
                 mipmapBlur
                 luminanceSmoothing={1.0}
-                intensity={3.5}
+                intensity={3}
+                
               />
               <DepthOfField
                 target={[7.7609, 8.6284, -5.1878]}
