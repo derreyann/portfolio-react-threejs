@@ -3335,7 +3335,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         movable={movableEnabled}
         imageUrls={["./icsexport.jpg", "./1.jpg", "./2.jpg"]}
-        webUrl="https://github.com/derreyann/utbm-schedule-exporter"
+        webUrl="utbm.yann.works"
         frame="Plane001"
         panel="Plane001"
         geometry={nodes.Plane001.geometry}
