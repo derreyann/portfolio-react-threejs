@@ -16,6 +16,7 @@
     "@theatre/studio": "0.6.0",
     "@types/three": "0.143.0",
     "maath": "0.5.2",
+    "pepjs": "^0.5.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "three": "0.143.0",

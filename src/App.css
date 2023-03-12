@@ -1,4 +1,6 @@
-
+.red-mesh {
+  pointer-events: none;
+}
 
 .logo {
   height: 30em;

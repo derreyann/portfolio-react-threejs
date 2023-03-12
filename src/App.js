@@ -2,6 +2,7 @@ import React, { Suspense, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, extend } from "@react-three/fiber";
 import { easing } from "maath";
 import HeroPage from './HeroPage';
+import 'pepjs';
 import {
   OrbitControls,
   Stage,
@@ -51,6 +52,7 @@ export default function App() {
   return (
     <>
       <Canvas
+        touchAction="none"
         shadows
         width="128"
         height="128"
@@ -214,6 +216,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
             i++;
             console.log(i);
           }
+          
           if (e.object.name === "Plane1") {
             console.log("yepee");
             /* 
