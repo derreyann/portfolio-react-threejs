@@ -3318,10 +3318,13 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         scale={[1.12, 1.2, 0.88]}
         rotation={[Math.PI / 2, 0, Math.PI / 9]}
       />
-      <ImageScreen
+      <ImageScreen2
         movable={movableEnabled}
-        imageUrls={["./about.jpg", "./1.jpg", "./2.jpg"]}
-        webUrl="https://www.linkedin.com/in/yannderre/"
+        imageUrls={["./about-1.jpg", "./about-2.jpg"]}
+        webUrl3="https://www.linkedin.com/in/yannderre/"
+        webUrl2={"https://open.spotify.com/user/5m77pig519e80uufntjz1wal1"}
+        webUrl={"https://github.com/derreyann"}
+        webUrl4={"mailto:yann.derre@utbm.fr"}
         frame="Plane005"
         panel="Plane005"
         position={[1.71, 8.89, -9.59]}
@@ -3342,7 +3345,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       />
       <ImageScreen
         movable={movableEnabled}
-        imageUrls={["./credits.jpg", "./1.jpg", "./2.jpg"]}
+        imageUrls={["./credits-2.jpg", "./credits-2.jpg"]}
         webUrl="https://github.com/derreyann/portfolio-react-threejs#credits"
         frame="Plane007"
         panel="Plane007"
@@ -3364,7 +3367,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         inside={Inside}
         movable={movableEnabled}
         webUrl="https://github.com/derreyann/projectLP25"
-        imageUrls={["./SQL.jpg", "./1.jpg", "./2.jpg"]}
+        imageUrls={["./SQL.jpg", "./sql-2.jpg", "./sql-3.jpg", "./sql-4.jpg", "./sql-5.jpg"]}
         frame="Plane006"
         panel="Plane006"
         position={[5.149, 5.06, -2.92]}
@@ -3681,5 +3684,272 @@ function RedMesh({ webUrl, ...props }) {
         transparent={true}
       />
     </mesh>
+  );
+}
+
+function IconMesh({ webUrl, ...props }) {
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  
+  useEffect(() => {
+    console.log(webUrl);
+    if (clicked) {
+      window.open(
+        webUrl, "_blank");
+      setClicked(false);
+    }
+  }, [clicked]);
+
+  return (
+    <mesh
+      {...props}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      onPointerDown={() => {
+        setClicked(!clicked);
+        console.log("clicked")
+      }}
+      onPointerUp={() => {
+        setClicked(!clicked);
+        console.log("clicked")
+        window.open(
+          webUrl, "_blank");
+      }}
+      //onClick={handleClick}
+      scale={[0.10, 0.10, 0.5]}
+    >
+      <planeBufferGeometry args={[2, 2]} />
+      <meshBasicMaterial
+        attach="material"
+        map={new THREE.TextureLoader().load('./spotify.png', (texture) => {
+          texture.flipY = false; // set flipY to false to flip the texture vertically
+          texture.needsUpdate = true; // update the texture after changing the flipY property
+        })}    
+        color={hovered ? "orange" : "white"}
+        opacity={hovered ? 0.5 : 1}
+        transparent={true}
+      />
+    </mesh>
+  );
+}
+
+function GithubMesh({ webUrl, ...props }) {
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  
+  useEffect(() => {
+    console.log(webUrl);
+    if (clicked) {
+      window.open(
+        webUrl, "_blank");
+      setClicked(false);
+    }
+  }, [clicked]);
+
+  return (
+    <mesh
+      {...props}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      onPointerDown={() => {
+        setClicked(!clicked);
+        console.log("clicked")
+      }}
+      onPointerUp={() => {
+        setClicked(!clicked);
+        console.log("clicked")
+        window.open(
+          webUrl, "_blank");
+      }}
+      //onClick={handleClick}
+      scale={[0.10, 0.10, 0.5]}
+    >
+      <planeBufferGeometry args={[2, 2]} />
+      <meshBasicMaterial
+        attach="material"
+        map={new THREE.TextureLoader().load('./github.png', (texture) => {
+          texture.flipY = false; // set flipY to false to flip the texture vertically
+          texture.needsUpdate = true; // update the texture after changing the flipY property
+        })}    
+        color={hovered ? "orange" : "white"}
+        opacity={hovered ? 0.5 : 1}
+        transparent={true}
+      />
+    </mesh>
+  );
+}
+function LIMesh({ webUrl, ...props }) {
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  
+  useEffect(() => {
+    console.log(webUrl);
+    if (clicked) {
+      window.open(
+        webUrl, "_blank");
+      setClicked(false);
+    }
+  }, [clicked]);
+
+  return (
+    <mesh
+      {...props}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      onPointerDown={() => {
+        setClicked(!clicked);
+        console.log("clicked")
+      }}
+      onPointerUp={() => {
+        setClicked(!clicked);
+        console.log("clicked")
+        window.open(
+          webUrl, "_blank");
+      }}
+      //onClick={handleClick}
+      scale={[0.10, 0.10, 0.5]}
+    >
+      <planeBufferGeometry args={[2, 2]} />
+      <meshBasicMaterial
+        attach="material"
+        map={new THREE.TextureLoader().load('./linkedin.png', (texture) => {
+          texture.flipY = false; // set flipY to false to flip the texture vertically
+          texture.needsUpdate = true; // update the texture after changing the flipY property
+        })}    
+        color={hovered ? "orange" : "white"}
+        opacity={hovered ? 0.5 : 1}
+        transparent={true}
+      />
+    </mesh>
+  );
+}
+
+function MailMesh({ webUrl, ...props }) {
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  
+  useEffect(() => {
+    console.log(webUrl);
+    if (clicked) {
+      window.open(
+        webUrl, "_blank");
+      setClicked(false);
+    }
+  }, [clicked]);
+
+  return (
+    <mesh
+      {...props}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+      onPointerDown={() => {
+        setClicked(!clicked);
+        console.log("clicked")
+      }}
+      onPointerUp={() => {
+        setClicked(!clicked);
+        console.log("clicked")
+        window.open(
+          webUrl, "_blank");
+      }}
+      //onClick={handleClick}
+      scale={[0.10, 0.10, 0.5]}
+    >
+      <planeBufferGeometry args={[2, 2]} />
+      <meshBasicMaterial
+        attach="material"
+        map={new THREE.TextureLoader().load('./email.png', (texture) => {
+          texture.flipY = false; // set flipY to false to flip the texture vertically
+          texture.needsUpdate = true; // update the texture after changing the flipY property
+        })}    
+        color={hovered ? "orange" : "white"}
+        opacity={hovered ? 0.5 : 1}
+        transparent={true}
+      />
+    </mesh>
+  );
+}
+
+
+function ImageScreen2({ imageUrls, movable, inside, webUrl, webUrl2, webUrl3, webUrl4, ...props }) {
+
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  const [imageIndex, setImageIndex] = useState(!hovered ? 0 : 1);
+  const textures = imageUrls.map((imageUrl) => {
+    const texture = useTexture(imageUrl);
+    texture.flipY = false; // Flip texture along the Y-axis
+    return texture;
+  });
+
+  useEffect(() => {
+    if (clicked) {
+      if (!hovered && imageIndex === textures.length - 1) {
+        setImageIndex(1);
+      } else if (hovered && imageIndex === textures.length - 1) {
+        setImageIndex(1);
+      } else {
+        setImageIndex((imageIndex + 1) % textures.length);
+      }
+      setClicked(false);
+    }
+  }, [clicked, imageIndex, hovered, textures.length]);
+
+
+
+  useEffect(() => {
+    if (hovered) { // if movable is disabled
+      setImageIndex(imageIndex === 0 ? 1 : imageIndex); // check current index and set it to 1 if it's 0, otherwise keep the same index
+    } else { // if movable is enabled
+      setTimeout(() => {
+        setImageIndex(0);
+      }, 2000); // go back to the first picture
+    }
+  }, [hovered]);
+  return (
+    <Screen {...props}>
+      <PerspectiveCamera
+        makeDefault
+        manual
+        aspect={1 / 1}
+        position={[0, 0, 2]}
+        rotation={[0, 0, 0]}
+      />
+      <color attach="background" args={["#b9ee8b"]} />
+      <ambientLight intensity={0.2} />
+      <pointLight position={[10, 10, 10]} intensity={0.75} />
+      <pointLight position={[-10, -10, -10]} />
+
+      <mesh
+        rotation={[0, 0, 0]}
+        onPointerOver={() => setHovered(true)}
+        onPointerOut={() => setHovered(false)}
+        onPointerDown={() => {
+          setClicked(!clicked);
+          console.log("clicked");
+        }}
+
+      >
+        <planeBufferGeometry args={[2, 2]} />
+        <meshBasicMaterial
+          attach="material"
+          map={textures[imageIndex]}
+          color={hovered ? "gray" : "lightgray"}
+          opacity={clicked ? 0.5 : 1}
+          reflectivity={0.5}
+          transparent={true}
+          needsUpdate={true}
+        />
+      </mesh>
+      <GithubMesh webUrl={webUrl} position={[0.68, 0.62, 0]} />
+      <IconMesh webUrl={webUrl2} position={[0.35, 0.62, 0]} />
+      <LIMesh webUrl={webUrl3} position={[-0.0, 0.62, 0]} />
+      <MailMesh webUrl={webUrl4} position={[-0.36, 0.62, 0]} />
+    </Screen>
   );
 }
