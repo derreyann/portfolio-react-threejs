@@ -2163,8 +2163,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         <group ref={groupRef} onClick={handleClick}>
           <mesh
             name="Plane1"
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
+
             castShadow
             receiveShadow
             geometry={nodes.Plane004.geometry}
@@ -2175,8 +2174,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
           />
           <mesh
             name="Plane2"
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
+
             castShadow
             receiveShadow
             geometry={nodes.Plane005.geometry}
@@ -2187,8 +2185,6 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
           />
           <mesh
             name="Plane3"
-            onPointerOver={() => hover(true)}
-            onPointerOut={() => hover(false)}
             castShadow
             receiveShadow
             geometry={nodes.Plane002.geometry}
@@ -3315,7 +3311,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         scale={[1.08, 1.03, 0.9]}
       />
       <ScreenInteractive
-      
+        name="named"
         frame="Plane004"
         panel="Plane004"
         position={[3.07, 2.2, -5.5]}
@@ -3418,7 +3414,7 @@ function ScreenInteractive(props, x = 0, y = 1) {
 
 
   return (
-    <Screen {...props}>
+    <Screen2 {...props}>
       <PerspectiveCamera
         makeDefault
         manual
@@ -3462,15 +3458,39 @@ function ScreenInteractive(props, x = 0, y = 1) {
       >
          (click here)
       </Text>
-    </Screen>
+    </Screen2>
   );
 }
-function Screen({ named, frame, panel, children, ...props }) {
+
+function Screen2({ named, frame, panel, children, ...props }) {
   const { nodes, materials } = useGLTF("/new new new scene.gltf");
   return (
     <group {...props}>
       <mesh
         name="named"
+        castShadow
+        receiveShadow
+        geometry={nodes[frame].geometry}
+        material={materials.Texture}
+      />
+      <mesh geometry={nodes[panel].geometry}>
+        <meshBasicMaterial toneMapped={false}>
+          <RenderTexture width={512} height={512} attach="map" anisotropy={16}>
+            {children}
+          </RenderTexture>
+        </meshBasicMaterial>
+      </mesh>
+    </group>
+  );
+}
+
+
+function Screen({ named, frame, panel, children, ...props }) {
+  const { nodes, materials } = useGLTF("/new new new scene.gltf");
+  return (
+    <group {...props}>
+      <mesh
+        name="Plane"
         castShadow
         receiveShadow
         geometry={nodes[frame].geometry}

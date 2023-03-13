@@ -194,7 +194,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
         e.stopPropagation();
         setObjectTexture(e.object.material);
         setSelectedMeshName(e.object);
-        //console.log(e);
+        console.log(e.object);
         i++
         //console.log(e);
         if (
