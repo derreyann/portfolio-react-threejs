@@ -37,4 +37,4 @@ To run this project locally, follow these steps:
 - [Wall 08 by Forest Run Forever](https://sketchfab.com/3d-models/wall-08-cd8d4cb8c1044b2eab9bbd7e7b77b257)
 
 
-Inspiration from the Monitors r3f demo from Paul Henschel [codesanbox](https://codesandbox.io/u/drcmda)
+Inspiration from the Monitors r3f demo from [Paul Henschel](https://codesandbox.io/u/drcmda)
