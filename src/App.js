@@ -56,7 +56,7 @@ export default function App() {
         shadows
         width="128"
         height="128"
-        dpr={[0.3, 1]}
+        dpr={[0.3, 0.8]}
         camera={{ fov: 50 }}
       >
         <color attach="background" args={["black"]} />      <Suspense fallback={null}>
