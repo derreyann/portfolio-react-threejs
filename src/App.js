@@ -47,7 +47,7 @@ export default function App() {
   const [selectedMeshName, setSelectedMeshName] = useState("");
   const onMeshClick = (mesh) => {
     setSelectedMeshName(mesh.name);
-    console.log(mesh.name);
+    //console.log(mesh.name);
   };
   return (
     <>
@@ -185,7 +185,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
   const [ObjectTexture, setObjectTexture] = useState("");
   const onMeshClick = (mesh) => {
     setSelectedMeshName(mesh.name);
-    console.log(mesh.name);
+    //console.log(mesh.name);
   };
   return (
     <group
@@ -194,14 +194,14 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
         e.stopPropagation();
         setObjectTexture(e.object.material);
         setSelectedMeshName(e.object);
-        console.log(e.object);
+        //console.log(e.object);
         i++
         //console.log(e);
         if (
           (e.object.type === "Mesh" && e.object.name.includes("Plane")) ||
           e.object.name.includes("named")
         ) {
-          console.log("Yes!");
+          //console.log("Yes!");
           api.refresh(e.object).fit();
           
           setMovableEnabled2(false);
@@ -214,11 +214,11 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
               );
             }
             i++;
-            console.log(i);
+            //console.log(i);
           }
           
           if (e.object.name === "Plane1") {
-            console.log("yepee");
+            //console.log("yepee");
             /* 
             const canvas = document.createElement("canvas");
             canvas.width = 256;
@@ -252,7 +252,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
             */
           }
         } else {
-          console.log("Quit!");
+          //console.log("Quit!");
           /*selectedMeshName.material = ObjectTexture;
           selectedMeshName.material.needsUpdate = true;
           */
@@ -260,7 +260,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
           //setMovableEnabled(true);
           e.button === 0;
           i = 0;
-          console.log(i);
+          //console.log(i);
         }
       }}
     >

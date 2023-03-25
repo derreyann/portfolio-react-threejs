@@ -47,14 +47,14 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       if (
         (e.object.type === "Mesh" && e.object.name.includes("Plane")) ||
         e.object.name.includes("named")) {
-        console.log("inside")
+        //console.log("inside")
         setInside(true)
       }
     }
   };
   const onMeshClick = (mesh) => {
     if (mesh.name === "Plane1") {
-      console.log(mesh.type);
+      //console.log(mesh.type);
       fetch("/text.html")
         .then((response) => response.text())
         .then((html) => {
@@ -3620,7 +3620,7 @@ function ImageScreen({ imageUrls, movable, inside, webUrl, ...props }) {
         onPointerOut={() => setHovered(false)}
         onPointerDown={() => {
           setClicked(!clicked);
-          console.log("clicked");
+          ////console.log("clicked");
         }}
 
       >
@@ -3646,7 +3646,7 @@ function RedMesh({ webUrl, ...props }) {
 
   
   useEffect(() => {
-    console.log(webUrl);
+    ////console.log(webUrl);
     if (clicked) {
       window.open(
         webUrl, "_blank");
@@ -3661,11 +3661,11 @@ function RedMesh({ webUrl, ...props }) {
       onPointerOut={() => setHovered(false)}
       onPointerDown={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        ////console.log("clicked")
       }}
       onPointerUp={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        ////console.log("clicked")
         window.open(
           webUrl, "_blank");
       }}
@@ -3693,7 +3693,7 @@ function IconMesh({ webUrl, ...props }) {
 
   
   useEffect(() => {
-    console.log(webUrl);
+    //console.log(webUrl);
     if (clicked) {
       window.open(
         webUrl, "_blank");
@@ -3708,11 +3708,11 @@ function IconMesh({ webUrl, ...props }) {
       onPointerOut={() => setHovered(false)}
       onPointerDown={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        //console.log("clicked")
       }}
       onPointerUp={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        //console.log("clicked")
         window.open(
           webUrl, "_blank");
       }}
@@ -3740,7 +3740,7 @@ function GithubMesh({ webUrl, ...props }) {
 
   
   useEffect(() => {
-    console.log(webUrl);
+    //console.log(webUrl);
     if (clicked) {
       window.open(
         webUrl, "_blank");
@@ -3755,11 +3755,11 @@ function GithubMesh({ webUrl, ...props }) {
       onPointerOut={() => setHovered(false)}
       onPointerDown={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        //console.log("clicked")
       }}
       onPointerUp={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        //console.log("clicked")
         window.open(
           webUrl, "_blank");
       }}
@@ -3786,7 +3786,7 @@ function LIMesh({ webUrl, ...props }) {
 
   
   useEffect(() => {
-    console.log(webUrl);
+    //console.log(webUrl);
     if (clicked) {
       window.open(
         webUrl, "_blank");
@@ -3801,11 +3801,11 @@ function LIMesh({ webUrl, ...props }) {
       onPointerOut={() => setHovered(false)}
       onPointerDown={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        //console.log("clicked")
       }}
       onPointerUp={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        //console.log("clicked")
         window.open(
           webUrl, "_blank");
       }}
@@ -3833,7 +3833,7 @@ function MailMesh({ webUrl, ...props }) {
 
   
   useEffect(() => {
-    console.log(webUrl);
+    //console.log(webUrl);
     if (clicked) {
       window.open(
         webUrl, "_blank");
@@ -3848,11 +3848,11 @@ function MailMesh({ webUrl, ...props }) {
       onPointerOut={() => setHovered(false)}
       onPointerDown={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        //console.log("clicked")
       }}
       onPointerUp={() => {
         setClicked(!clicked);
-        console.log("clicked")
+        //console.log("clicked")
         window.open(
           webUrl, "_blank");
       }}
@@ -3931,7 +3931,7 @@ function ImageScreen2({ imageUrls, movable, inside, webUrl, webUrl2, webUrl3, we
         onPointerOut={() => setHovered(false)}
         onPointerDown={() => {
           setClicked(!clicked);
-          console.log("clicked");
+          //console.log("clicked");
         }}
 
       >
