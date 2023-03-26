@@ -26,7 +26,7 @@ import {
   Html
 } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { editable as e, SheetProvider } from "@theatre/r3f";
+//import { editable as e, SheetProvider } from "@theatre/r3f";
 
 import {
   Selection,
@@ -50,20 +50,6 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         //console.log("inside")
         setInside(true)
       }
-    }
-  };
-  const onMeshClick = (mesh) => {
-    if (mesh.name === "Plane1") {
-      //console.log(mesh.type);
-      fetch("/text.html")
-        .then((response) => response.text())
-        .then((html) => {
-          // Render the HTML as a texture on the plane
-          const texture = new THREE.TextureLoader().load(
-            `data:text/html;charset=utf-8,${escape(html)}`
-          );
-          mesh.material.map = texture;
-        });
     }
   };
 
@@ -3373,7 +3359,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         position={[5.149, 5.06, -2.92]}
         rotation={[Math.PI / 2, 0, 0.79]}
         scale={[0.9, 0.85, 0.69]}
-      />*/
+      />
 
     </group>
   );

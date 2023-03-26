@@ -56,8 +56,7 @@ export default function App() {
         shadows
         width="128"
         height="128"
-        dpr={[0.3, 0.8]}
-        camera={{ fov: 50 }}
+        dpr={[0.3, 0.75]}
       >
         <color attach="background" args={["black"]} />      <Suspense fallback={null}>
           <SheetProvider sheet={demoSheet}>
@@ -74,7 +73,7 @@ export default function App() {
                 -0.05488506456904811,
                 -0.008547619429015501
               ]}
-              fov={44.39999999999997}
+              fov={40}
               resolution={128}
               lookAt={(0, 0, 0)}
             />
@@ -93,7 +92,7 @@ export default function App() {
               castShadow
               shadow-mapSize={512}
             />
-            <Bounds observe margin={1.2}>
+            <Bounds observe damping={3.5} margin={0.9}>
               <Selection>
                 <SelectToZoom setMovableEnabled={setMovableEnabled} movableEnabled={movableEnabled}>
                   <Model SelectToZoom={onMeshClick} movableEnabled={movableEnabled}/>
@@ -111,12 +110,12 @@ export default function App() {
               />
               <DepthOfField
                 target={[0.52, 4.04, -6.91]}
-                focalLength={0.015}
+                focalLength={0.020}
                 bokehScale={10}
                 height={500}
               />
 
-              <Noise opacity={0.05} />
+              <Noise opacity={0.035} />
             </EffectComposer>
           </SheetProvider>
           <BakeShadows />
