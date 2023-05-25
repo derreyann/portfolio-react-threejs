@@ -15,7 +15,8 @@ import {
   useCursor,
   RenderTexture,
   Loader,
-  Html
+  Html,
+  Sparkles
 } from "@react-three/drei";
 import {
   TextureLoader,
@@ -95,18 +96,19 @@ export default function App() {
             <Bounds observe damping={3.5} margin={0.9}>
               <Selection>
                 <SelectToZoom setMovableEnabled={setMovableEnabled} movableEnabled={movableEnabled}>
-                  <Model SelectToZoom={onMeshClick} movableEnabled={movableEnabled}/>
+                  <Model SelectToZoom={onMeshClick} movableEnabled={movableEnabled} />
                 </SelectToZoom>
               </Selection>
             </Bounds>
             <AdaptiveDpr pixelated />
+            <Sparkles position={[0,4,0]} count={200} scale={10} size={1} speed={0.2} color={'white'} />
             <EffectComposer resolutionScale={0.10} disableNormalPass>
               <Bloom
                 luminanceThreshold={0}
                 mipmapBlur
                 luminanceSmoothing={1.0}
                 intensity={3.5}
-                
+
               />
               <DepthOfField
                 target={[0.52, 4.04, -6.91]}
@@ -151,7 +153,7 @@ function Movable() {
     const mql = window.matchMedia('(orientation: landscape)');
     return mql.matches;
   }
-  const dampingFactor = landscapeMode ? 6 : 0.76;
+  const dampingFactor = landscapeMode ? 6 : 0.75;
 
   //console.log(landscapeMode);
   useFrame((state, delta) => {
@@ -174,7 +176,7 @@ function Movable() {
 }
 // This component wraps children in a group with a click handler
 // Clicking any object will refresh and fit bounds
-function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
+function SelectToZoom({ children, setMovableEnabled, movableEnabled }) {
   const api = useBounds();
   var i = 0;
   const [selectedObjectName, setSelectedObjectName] = useState("");
@@ -202,9 +204,9 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
         ) {
           //console.log("Yes!");
           api.refresh(e.object).fit();
-          
+
           setMovableEnabled2(false);
-          
+
           if (e.object.name === "named") {
             if (i === 1 && !movableEnabled2) {
               window.open(
@@ -215,7 +217,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled}) {
             i++;
             //console.log(i);
           }
-          
+
           if (e.object.name === "Plane1") {
             //console.log("yepee");
             /* 
