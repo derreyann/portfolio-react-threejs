@@ -101,7 +101,7 @@ export default function App() {
               </Selection>
             </Bounds>
             <AdaptiveDpr pixelated />
-            <Sparkles position={[0,4,0]} count={200} scale={10} size={1} speed={0.2} color={'white'} />
+            <Sparkles position={[0,4,0]} count={200} scale={10} size={0.85} speed={0.1} color={'#eeeeee'} />
             <EffectComposer resolutionScale={0.10} disableNormalPass>
               <Bloom
                 luminanceThreshold={0}
