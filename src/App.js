@@ -185,7 +185,7 @@ function Movable() {
           (-state.pointer.x * state.viewport.width) * Math.PI / rotatedampingFactor,
           0
         ],
-        0.5,
+        0.98,
         delta
       );
       easing.damp3(state.camera.position,
