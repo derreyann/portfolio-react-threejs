@@ -153,28 +153,51 @@ function Movable() {
     const mql = window.matchMedia('(orientation: landscape)');
     return mql.matches;
   }
-  const dampingFactor = landscapeMode ? 6 : 0.75;
+  const dampingFactor = landscapeMode ? 6 : 0.8;
+  const rotatedampingFactor = landscapeMode ? 100 : 15;
 
   //console.log(landscapeMode);
   useFrame((state, delta) => {
     if (!enabled) return; // if not enabled, skip the parallax
 
-
-    easing.damp3(
-      state.camera.position,
-      [
-        -1 + (state.pointer.x * state.viewport.width) / dampingFactor,
-        (2 + state.pointer.y) / 4,
-        7
-      ],
-      0.5,
-      delta
-    );
-    easing.damp3(state.camera.rotation, [
-      0.3788855445285419,
-      -0.05488506456904811,
-      -0.008547619429015501
-    ], 0.5, delta);
+    if (landscapeMode) {
+      easing.damp3(
+        state.camera.position,
+        [
+          -1 + (state.pointer.x * state.viewport.width) / dampingFactor,
+          (2 + state.pointer.y) / 4,
+          7
+        ],
+        0.5,
+        delta
+      );
+      easing.damp3(state.camera.rotation, [
+        0.3788855445285419,
+        -0.05488506456904811,
+        -0.008547619429015501
+      ], 0.5, delta);
+    }
+    else {
+      easing.damp3(
+        state.camera.rotation,
+        [
+          0,
+          (-state.pointer.x * state.viewport.width) * Math.PI / rotatedampingFactor,
+          0
+        ],
+        0.5,
+        delta
+      );
+      easing.damp3(state.camera.position,
+        [
+          0,
+          (5 + state.pointer.y * state.viewport.height / 10),
+          5
+        ],
+        0.5,
+        delta
+      );
+    }
   });
   return null; // Movable doesn't need to return any elements
 }
