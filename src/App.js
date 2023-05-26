@@ -182,7 +182,7 @@ function Movable() {
         state.camera.rotation,
         [
           0,
-          (-state.pointer.x * state.viewport.width) * Math.PI / rotatedampingFactor,
+          (state.pointer.x * state.viewport.width) * Math.PI / rotatedampingFactor,
           0
         ],
         0.98,
