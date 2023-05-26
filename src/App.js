@@ -170,7 +170,11 @@ function Movable() {
       0.5,
       delta
     );
-
+    easing.damp3(state.camera.rotation, [
+      0.3788855445285419,
+      -0.05488506456904811,
+      -0.008547619429015501
+    ], 0.5, delta);
   });
   return null; // Movable doesn't need to return any elements
 }
