@@ -178,11 +178,12 @@ function Movable() {
       ], 0.5, delta);
     }
     else {
+      const direction = navigator.maxTouchPoints ? 1 : -1;
       easing.damp3(
         state.camera.rotation,
         [
           0,
-          (state.pointer.x * state.viewport.width) * Math.PI / rotatedampingFactor,
+          (direction * state.pointer.x * state.viewport.width) * Math.PI / rotatedampingFactor,
           0
         ],
         0.98,
