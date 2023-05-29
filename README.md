@@ -6,8 +6,7 @@ It's still has some rough edges and unpolished features, but the overall experie
 
 ## screenshot
 
-![image-hero](./public/image-hero.png)
-
+[![image-hero](./public/image-hero.png)](https://yann.works)
 ## features
 
  - **Performance scaling** for optimal experience across devices *(mobile, tablet, desktop)*
