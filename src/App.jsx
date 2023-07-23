@@ -1,6 +1,7 @@
 import React, { Suspense, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, extend } from "@react-three/fiber";
 import { easing } from "maath";
+
 import HeroPage from './HeroPage';
 import 'pepjs';
 import {
@@ -57,7 +58,7 @@ export default function App() {
         shadows
         width="128"
         height="128"
-        dpr={[0.3, 0.75]}
+        dpr={[0.3, 0.6]}
       >
         <color attach="background" args={["black"]} />      <Suspense fallback={null}>
           <SheetProvider sheet={demoSheet}>
@@ -234,7 +235,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled }) {
           api.refresh(e.object).fit();
 
           setMovableEnabled2(false);
-
+          /*
           if (e.object.name === "named") {
             if (i === 1 && !movableEnabled2) {
               window.open(
@@ -245,6 +246,7 @@ function SelectToZoom({ children, setMovableEnabled, movableEnabled }) {
             i++;
             //console.log(i);
           }
+          */
 
           if (e.object.name === "Plane1") {
             //console.log("yepee");
