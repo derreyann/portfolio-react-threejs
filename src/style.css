@@ -10,5 +10,6 @@ body,
   width: device-width;
   viewport-fit: cover;
   background-color: black;
+  -webkit-tap-highlight-color: transparent;
 }
         
