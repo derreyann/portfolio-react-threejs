@@ -18,6 +18,8 @@ import {
   Loader,
   Html,
   Sparkles,
+  AsciiRenderer,
+  Cloud,
 } from "@react-three/drei";
 import {
   TextureLoader,
@@ -34,6 +36,23 @@ import {
   Select,
   Outline,
   Noise,
+  ToneMapping,
+  Sepia,
+  Autofocus,
+  ColorDepth,
+  ColorAverage,
+  Scanline,
+  LensFlare,
+  GodRays,
+  N8AO,
+  Pixelation,
+  ASCII,
+  HueSaturation,
+  Glitch,
+  ShockWave,
+  DotScreen,
+  ChromaticAberration,
+  BrightnessContrast,
 } from "@react-three/postprocessing";
 import { Model } from "./Model";
 import { getProject } from "@theatre/core";
@@ -50,12 +69,7 @@ export default function App() {
   };
   return (
     <>
-      <Canvas
-        shadows
-        width="128"
-        height="128"
-        dpr={[0.3, 0.6]}
-      >
+      <Canvas shadows width="128" height="128" dpr={[0.3, 0.6]}>
         <color attach="background" args={["black"]} />
         <Suspense fallback={null}>
           <SheetProvider sheet={demoSheet}>
@@ -94,6 +108,7 @@ export default function App() {
                     SelectToZoom={onMeshClick}
                     movableEnabled={movableEnabled}
                   />
+                  <BakeShadows />
                 </SelectToZoom>
               </Selection>
             </Bounds>
@@ -106,29 +121,69 @@ export default function App() {
               speed={0.1}
               color={"#eeeeee"}
             />
-            <EffectComposer resolutionScale={0.1} disableNormalPass>
+            <EffectComposer resolutionScale={0.1}>
+              <Sepia intensity={0.30} />
               <Bloom
                 luminanceThreshold={0}
                 mipmapBlur
                 luminanceSmoothing={1.0}
                 intensity={3.5}
               />
-              <DepthOfField
-                target={[0.52, 4.04, -6.91]}
-                focalLength={0.02}
+              <Autofocus
+                mouse
+                focalLength={0.012}
                 bokehScale={10}
                 height={500}
               />
+              <ChromaticAberration  opacity={0.44} radialModulation offset={[0.0019,0.009]} />
               <Noise opacity={0.035} />
             </EffectComposer>
           </SheetProvider>
           <BakeShadows />
         </Suspense>
       </Canvas>
-      <Loader />
+      <Loader
+        containerStyles={styles.container}
+        dataStyles={styles.data}
+        barStyles={styles.bar}
+        innerStyles={styles.inner}
+      />
     </>
   );
 }
+
+const styles = {
+  container: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+  },
+  inner: {
+    width: 200,
+    height: 3,
+    background: "none",
+    textAlign: "center",
+    transition: "opacity 200ms ease-in-out",
+  },
+  bar: {
+    height: 5,
+    width: "100%",
+    background: "white",
+    position: "relative",
+    transition: "transform 200ms ease-in-out",
+    transformOrigin: "left center",
+  },
+  data: {
+    display: "none",
+  },
+};
 
 function Movable() {
   const [enabled, setEnabled] = useState(true);
