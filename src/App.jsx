@@ -51,7 +51,6 @@ export default function App() {
   return (
     <>
       <Canvas
-        touchAction="none"
         shadows
         width="128"
         height="128"
