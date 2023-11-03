@@ -234,7 +234,7 @@ function Movable() {
         delta
       );
     } else {
-      const direction = navigator.maxTouchPoints ? 1 : 1;
+      const direction = navigator.maxTouchPoints ? -1 : -1;
       easing.damp3(
         state.camera.rotation,
         [
