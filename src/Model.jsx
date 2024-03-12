@@ -2149,7 +2149,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
             material={materials.greeenscreen}
             position={[-4.27, 2.75, -3.54]}
             rotation={[Math.PI / 2, 0, -1.09]}
-            scale={[1.03, 1.01, 0.87]}
+            scale={[1.12, 1.01, 0.87]}
           />
           <mesh
             name="Plane5"
@@ -3289,7 +3289,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         material={materials.greeenscreen}
         position={[-4.26, 2.75, -3.54]}
         rotation={[Math.PI / 2, 0, -1.09]}
-        scale={[1.03, 1.01, 0.89]}
+        scale={[1.12, 1.01, 0.9]}
       />
       <ImageScreen
         movable={movableEnabled}

@@ -247,7 +247,7 @@ function SelectToZoom({ children }) {
           setTimeout(() => {
           setSelectedMesh(e.object.position);
           setMovableEnabled2(false);
-        }, 20);
+        }, 100);
         }
       }}
       onPointerUp={(e) => {
