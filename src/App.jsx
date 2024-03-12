@@ -1,63 +1,34 @@
-import React, { Suspense, useRef, useState, useEffect } from "react";
-import { Canvas, useFrame, extend } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { easing } from "maath";
+import React, { Suspense, useRef, useState } from "react";
 
-import HeroPage from "./HeroPage";
-import "pepjs";
 import {
-  OrbitControls,
-  Stage,
-  useGLTF,
-  MeshReflectorMaterial,
+  AdaptiveDpr,
+  AdaptiveEvents,
   BakeShadows,
   Bounds,
-  useBounds,
-  AdaptiveDpr,
-  useCursor,
-  RenderTexture,
+  Bvh,
   Loader,
-  Html,
+  OrbitControls,
+  PerformanceMonitor,
   Sparkles,
-  AsciiRenderer,
-  Cloud,
+  useBounds,
 } from "@react-three/drei";
 import {
-  TextureLoader,
-  MeshBasicMaterial,
-  CanvasTexture,
-  RepeatWrapping,
-  Color,
-} from "three";
-import {
-  EffectComposer,
-  Bloom,
-  DepthOfField,
-  Selection,
-  Select,
-  Outline,
-  Noise,
-  ToneMapping,
-  Sepia,
   Autofocus,
-  ColorDepth,
-  ColorAverage,
-  Scanline,
-  LensFlare,
-  GodRays,
-  N8AO,
-  Pixelation,
-  ASCII,
-  HueSaturation,
-  Glitch,
-  ShockWave,
-  DotScreen,
+  Bloom,
   ChromaticAberration,
-  BrightnessContrast,
+  EffectComposer,
+  Noise,
+  Selection,
+  Sepia,
 } from "@react-three/postprocessing";
-import { Model } from "./Model";
 import { getProject } from "@theatre/core";
-import { editable as e, SheetProvider, PerspectiveCamera } from "@theatre/r3f";
+import { PerspectiveCamera, SheetProvider, editable as e } from "@theatre/r3f";
+import "pepjs";
 import * as THREE from "three";
+import { Model } from "./Model";
+import { clamp } from "three/src/math/MathUtils";
 const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
 export default function App() {
   const ref = useRef();
@@ -67,11 +38,13 @@ export default function App() {
   const onMeshClick = (mesh) => {
     setSelectedMeshName(mesh.name);
   };
+
   return (
     <>
-      <Canvas shadows width="128" height="128" dpr={[0.3, 0.6]}>
+      <Canvas shadows width="128" height="128" dpr={[0.3,0.6]}>
         <color attach="background" args={["black"]} />
         <Suspense fallback={null}>
+        <Bvh firstHitOnly>
           <SheetProvider sheet={demoSheet}>
             <PerspectiveCamera
               theatreKey="Camera"
@@ -112,7 +85,6 @@ export default function App() {
                 </SelectToZoom>
               </Selection>
             </Bounds>
-            <AdaptiveDpr pixelated />
             <Sparkles
               position={[0, 4, 0]}
               count={200}
@@ -121,25 +93,27 @@ export default function App() {
               speed={0.1}
               color={"#eeeeee"}
             />
-            <EffectComposer resolutionScale={0.1}>
-              <Sepia intensity={0.30} />
+            <EffectComposer resolutionScale={1} enableNormalPass={0}>
+              <Sepia intensity={0.3} />
               <Bloom
                 luminanceThreshold={0}
                 mipmapBlur
                 luminanceSmoothing={1.0}
                 intensity={3.5}
               />
-              <Autofocus
-                mouse
-                focalLength={0.012}
-                bokehScale={10}
-                height={500}
+              <Autofocus mouse focalLength={2} bokehScale={0.4} height={500} />
+              <ChromaticAberration
+                opacity={0.44}
+                radialModulation
+                offset={[0.002, 0.002]}
               />
-              <ChromaticAberration  opacity={0.44} radialModulation offset={[0.0019,0.009]} />
               <Noise opacity={0.035} />
             </EffectComposer>
           </SheetProvider>
           <BakeShadows />
+          <AdaptiveDpr pixelated />
+          <AdaptiveEvents/>
+        </Bvh>
         </Suspense>
       </Canvas>
       <Loader
@@ -239,8 +213,8 @@ function Movable() {
         state.camera.rotation,
         [
           0,
-          (direction * state.pointer.x * state.viewport.width * Math.PI) /
-            rotatedampingFactor,
+          clamp((5*direction * state.pointer.x * state.viewport.width * Math.PI) /
+            rotatedampingFactor, -0.8,0.8),
           0,
         ],
         0.98,
@@ -248,7 +222,7 @@ function Movable() {
       );
       easing.damp3(
         state.camera.position,
-        [0, 5 + (state.pointer.y * state.viewport.height) / 10, 5],
+        [ 0, 5 + (state.pointer.y * state.viewport.height) / 10, 5],
         0.5,
         delta
       );
@@ -257,41 +231,47 @@ function Movable() {
   return null;
 }
 
-function SelectToZoom({ children, setMovableEnabled, movableEnabled }) {
+function SelectToZoom({ children }) {
   const api = useBounds();
-  var i = 0;
-  const [selectedObjectName, setSelectedObjectName] = useState("");
-  const [selectedMeshName, setSelectedMeshName] = useState("");
   const [movableEnabled2, setMovableEnabled2] = useState(true);
-  const [ObjectTexture, setObjectTexture] = useState("");
-  const onMeshClick = (mesh) => {
-    setSelectedMeshName(mesh.name);
-  };
+  const [selectedMesh, setSelectedMesh] = useState();
   return (
     <group
-      onClick={(e) => {
+      onPointerDown={(e) => {
         e.stopPropagation();
-        setObjectTexture(e.object.material);
-        setSelectedMeshName(e.object);
-        i++;
         if (
-          (e.object.type === "Mesh" && e.object.name.includes("Plane")) ||
+          e.object.name.includes("Plane") ||
           e.object.name.includes("named")
         ) {
           api.refresh(e.object).fit();
-
+          setSelectedMesh(e.object.position);
           setMovableEnabled2(false);
-          if (e.object.name === "Plane1") {
-          }
-        } else {
-          setMovableEnabled2(true);
-          e.button === 0;
-          i = 0;
+        }
+      }}
+      onPointerUp={(e) => {
+        e.stopPropagation();
+        if (!movableEnabled2) {
+          if (
+            !(e.object.name.includes("Plane") || e.object.name.includes("named") || !e.object.type == "Mesh")
+          )
+            setMovableEnabled2(true);
         }
       }}
     >
       {children}
-      {movableEnabled2 && <Movable />}
+      {movableEnabled2 && <Movable/>}
+      <OrbitControls
+        enabled={!movableEnabled2}
+        makeDefault
+        target={selectedMesh}
+        target0={selectedMesh}
+        enableZoom={false}
+        dampingFactor={0.003}
+
+        autoRotate={false}
+        enableDamping
+      />
     </group>
   );
 }
+
