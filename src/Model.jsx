@@ -3362,7 +3362,7 @@ function ScreenInteractive(props, x = 0, y = 1) {
         prevColor === "#b9ee8b" ? "orange" : "#b9ee8b"
       );
 
-      setDisplayText(displayText === "thx :3" ? "internship found" : "thx :3");
+      setDisplayText(displayText === "2024 update coming soon" ? "=)" : "2024 update coming soon");
     }, 1500);
     return () => clearInterval(intervalId);
   }, [displayText]);
