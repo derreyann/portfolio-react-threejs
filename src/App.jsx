@@ -244,18 +244,20 @@ function SelectToZoom({ children }) {
           e.object.name.includes("named")
         ) {
           api.refresh(e.object).fit();
+          setTimeout(() => {
           setSelectedMesh(e.object.position);
           setMovableEnabled2(false);
+        }, 20);
         }
       }}
       onPointerUp={(e) => {
         e.stopPropagation();
-        if (!movableEnabled2) {
-          if (
-            !(e.object.name.includes("Plane") || e.object.name.includes("named") || !e.object.type == "Mesh")
-          )
-            setMovableEnabled2(true);
-        }
+          if (!movableEnabled2) {
+            if (
+              !(e.object.name.includes("Plane") || e.object.name.includes("named") || !e.object.type == "Mesh")
+              )
+              setMovableEnabled2(true);
+            }
       }}
     >
       {children}
