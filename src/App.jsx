@@ -1,4 +1,4 @@
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { easing } from "maath";
 import React, { Suspense, useRef, useState } from "react";
 
@@ -13,6 +13,8 @@ import {
   PerformanceMonitor,
   Sparkles,
   useBounds,
+  PerspectiveCamera,
+  SpotLight,
 } from "@react-three/drei";
 import {
   Autofocus,
@@ -23,31 +25,30 @@ import {
   Selection,
   Sepia,
 } from "@react-three/postprocessing";
-import { getProject } from "@theatre/core";
-import { PerspectiveCamera, SheetProvider, editable as e } from "@theatre/r3f";
-import "pepjs";
 import * as THREE from "three";
 import { Model } from "./Model";
 import { clamp } from "three/src/math/MathUtils";
-const demoSheet = getProject("Demo Project").sheet("Demo Sheet");
+import ReturnButton from "./returnButton";
 export default function App() {
   const ref = useRef();
   const [movableEnabled, setMovableEnabled] = useState(true);
+  const [movableEnabled2, setMovableEnabled2] = useState(true);
 
   const [selectedMeshName, setSelectedMeshName] = useState("");
   const onMeshClick = (mesh) => {
     setSelectedMeshName(mesh.name);
   };
+  const handleReturnClick = () => {
+    setMovableEnabled2(true);
+  };
 
   return (
     <>
-      <Canvas shadows width="128" height="128" dpr={[0.3,0.6]}>
+      <Canvas shadows width="128" height="128" dpr={[0.3, 0.6]}>
         <color attach="background" args={["black"]} />
         <Suspense fallback={null}>
-        <Bvh firstHitOnly>
-          <SheetProvider sheet={demoSheet}>
+          <Bvh firstHitOnly>
             <PerspectiveCamera
-              theatreKey="Camera"
               makeDefault
               position={[
                 -1.4235082949646687, 0.20562504834542494, 12.610933351075456,
@@ -60,8 +61,7 @@ export default function App() {
               lookAt={(0, 0, 0)}
             />
             <hemisphereLight intensity={0.15} groundColor="black" />
-            <e.spotLight
-              theatreKey="Light"
+            <SpotLight
               position={[
                 -7.321508953834595, 134.55811607486405, -41.339696743147556,
               ]}
@@ -74,12 +74,12 @@ export default function App() {
             <Bounds observe damping={3.5} margin={0.9}>
               <Selection>
                 <SelectToZoom
-                  setMovableEnabled={setMovableEnabled}
-                  movableEnabled={movableEnabled}
+                  setMovableEnabled={setMovableEnabled2}
+                  movableEnabled={movableEnabled2}
                 >
                   <Model
                     SelectToZoom={onMeshClick}
-                    movableEnabled={movableEnabled}
+                    movableEnabled={movableEnabled2}
                   />
                   <BakeShadows />
                 </SelectToZoom>
@@ -109,13 +109,13 @@ export default function App() {
               />
               <Noise opacity={0.035} />
             </EffectComposer>
-          </SheetProvider>
-          <BakeShadows />
-          <AdaptiveDpr pixelated />
-          <AdaptiveEvents/>
-        </Bvh>
+            <BakeShadows />
+            <AdaptiveDpr pixelated />
+            <AdaptiveEvents />
+          </Bvh>
         </Suspense>
       </Canvas>
+      {!movableEnabled2 && <ReturnButton onClick={handleReturnClick} />}
       <Loader
         containerStyles={styles.container}
         dataStyles={styles.data}
@@ -159,7 +159,7 @@ const styles = {
   },
 };
 
-function Movable() {
+function Movable({ camera }) {
   const [enabled, setEnabled] = useState(true);
   const target = new THREE.Vector3(0, 2, 0);
   const [landscapeMode, setLandscapeMode] = useState(getLandscapeMode());
@@ -192,7 +192,7 @@ function Movable() {
 
     if (landscapeMode) {
       easing.damp3(
-        state.camera.position,
+        camera.position,
         [
           -1 + (state.pointer.x * state.viewport.width) / dampingFactor,
           (2 + state.pointer.y) / 4,
@@ -202,7 +202,7 @@ function Movable() {
         delta
       );
       easing.damp3(
-        state.camera.rotation,
+        camera.rotation,
         [0.3788855445285419, -0.05488506456904811, -0.008547619429015501],
         0.5,
         delta
@@ -210,19 +210,27 @@ function Movable() {
     } else {
       const direction = navigator.maxTouchPoints ? -1 : -1;
       easing.damp3(
-        state.camera.rotation,
+        camera.rotation,
         [
           0,
-          clamp((1.1*direction * state.pointer.x * state.viewport.width * Math.PI) /
-            rotatedampingFactor, -0.8,0.8),
+          clamp(
+            (1.1 *
+              direction *
+              state.pointer.x *
+              state.viewport.width *
+              Math.PI) /
+              rotatedampingFactor,
+            -0.8,
+            0.8
+          ),
           0,
         ],
         0.98,
         delta
       );
       easing.damp3(
-        state.camera.position,
-        [ 0, 5 + (state.pointer.y * state.viewport.height) / 10, 5],
+        camera.position,
+        [0, 5 + (state.pointer.y * state.viewport.height) / 10, 5],
         0.5,
         delta
       );
@@ -231,49 +239,101 @@ function Movable() {
   return null;
 }
 
-function SelectToZoom({ children }) {
-  const api = useBounds();
-  const [movableEnabled2, setMovableEnabled2] = useState(true);
+function SelectToZoom({ children, movableEnabled, setMovableEnabled }) {
+  const [targetPosition, setTargetPosition] = useState(null);
+  const [targetQuaternion, setTargetQuaternion] = useState(null);
+  const [readyQuit, setreadyQuit] = useState(false);
   const [selectedMesh, setSelectedMesh] = useState();
+
+  const { camera } = useThree(); // Access the camera
+
+  // Move camera to the front of the TV with easing
+  const moveCameraToFrontOfTV = (mesh) => {
+    const frontDirection = new THREE.Vector3(0, -1, 0); // Default front direction
+    const worldQuaternion = new THREE.Quaternion();
+
+    // Get the mesh's world position and world quaternion (important for correct orientation)
+    const worldPosition = new THREE.Vector3();
+    mesh.getWorldPosition(worldPosition); // Get the position in world space
+    mesh.getWorldQuaternion(worldQuaternion); // Get the world rotation (not just local)
+
+    // Apply the world quaternion to the front direction
+    frontDirection.applyQuaternion(worldQuaternion);
+
+    const distanceFromTV = 5.5; // Set a fixed distance in front of the TV
+    const cameraTargetPosition = worldPosition
+      .clone()
+      .add(frontDirection.multiplyScalar(-distanceFromTV)); // Position the camera in front of the TV
+
+    // Set the target position and quaternion
+    setTargetPosition(cameraTargetPosition);
+    setTargetQuaternion(
+      camera.quaternion
+        .clone()
+        .setFromRotationMatrix(
+          new THREE.Matrix4().lookAt(
+            cameraTargetPosition,
+            worldPosition,
+            camera.up
+          )
+        )
+    );
+  };
+
+  // Interpolate camera position and rotation using damping
+  useFrame(() => {
+    if (!movableEnabled && targetPosition && targetQuaternion) {
+      // Use damping for position
+      camera.position.lerp(targetPosition, 0.05); // Adjust damping factor (0.05) to control the speed
+      camera.quaternion.slerp(targetQuaternion, 0.05); // Damping for rotation
+
+      camera.updateProjectionMatrix(); // Update the camera's projection matrix
+    }
+  });
+
   return (
     <group
       onPointerDown={(e) => {
         e.stopPropagation();
+
+        // Only trigger if the object is a Plane or named
+        const clickedObject = e.object;
         if (
           e.object.name.includes("Plane") ||
           e.object.name.includes("named")
         ) {
-          api.refresh(e.object).fit();
-          setTimeout(() => {
-          setSelectedMesh(e.object.position);
-          setMovableEnabled2(false);
-        }, 100);
+          setMovableEnabled(false);
+          moveCameraToFrontOfTV(clickedObject);
+          setSelectedMesh(clickedObject);
+          let quitTimer = setTimeout(() => {
+            setreadyQuit(true); // Now it's ready to quit after delay
+          }, 250);
+
+          // Clear the timer if any new pointer events fire
+          return () => clearTimeout(quitTimer);
         }
       }}
       onPointerUp={(e) => {
         e.stopPropagation();
-          if (!movableEnabled2) {
-            if (
-              !(e.object.name.includes("Plane") || e.object.name.includes("named") || !e.object.type == "Mesh")
-              )
-              setMovableEnabled2(true);
-            }
+
+        // If the camera is ready to quit and movement was disabled
+        if (readyQuit && !movableEnabled) {
+          // Only re-enable movable if not a Plane, named, or Mesh
+          if (
+            !(
+              e.object.name.includes("Plane") ||
+              e.object.name.includes("named") ||
+              !e.object.type == "Mesh"
+            )
+          ) {
+            setMovableEnabled(true);
+          }
+        }
+        setreadyQuit(false); // Reset readyQuit flag on pointer up
       }}
     >
       {children}
-      {movableEnabled2 && <Movable/>}
-      <OrbitControls
-        enabled={!movableEnabled2}
-        makeDefault
-        target={selectedMesh}
-        target0={selectedMesh}
-        enableZoom={false}
-        dampingFactor={0.003}
-
-        autoRotate={false}
-        enableDamping
-      />
+      {movableEnabled && <Movable camera={camera} />}
     </group>
   );
 }
-

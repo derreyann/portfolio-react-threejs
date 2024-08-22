@@ -2107,8 +2107,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
         position={[1, 14, -10]}
         rotation={[-Math.PI / 2, 0, 0]}
         scale={2.22}
-      >
-      </group>
+      ></group>
       <Select>
         <group ref={groupRef} onClick={handleClick}>
           <mesh
@@ -2178,7 +2177,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
             geometry={nodes.Plane003.geometry}
             material={materials.greeenscreen}
             position={[-5.42, 6.73, -0.51]}
-            rotation={[-Math.PI / 2, 0, 1.22]}
+            rotation={[-Math.PI / 2, -Math.PI, 1.91]}
             scale={[0.97, 1, 0.73]}
           />
           <mesh
@@ -3294,7 +3293,9 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
       <ImageScreen
         movable={movableEnabled}
         imageUrls={["./credits-2.jpg", "./credits-2.jpg"]}
-        webUrl={["https://github.com/derreyann/portfolio-react-threejs#credits"]}
+        webUrl={[
+          "https://github.com/derreyann/portfolio-react-threejs#credits",
+        ]}
         frame="Plane007"
         panel="Plane007"
         position={[7.76, 8.93, -5.15]}
@@ -3331,17 +3332,7 @@ export function Model({ props, SelectToZoom, movableEnabled }) {
     </group>
   );
 }
-/*
-<ImageScreen
-  movable={movableEnabled}
-  imageUrls={["./hero.jpg", "./1.jpg", "./2.jpg"]}
-  webUrl={["google.com"]}
-  frame="Plane003"
-  panel="Plane003"
-  position={[-5.42, 6.70, -0.50]}
-  rotation={[Math.PI/2, 0, -Math.PI/2.58]}
-  scale={[0.97, 1, 0.73]}
-/>*/
+
 useGLTF.preload("/new new new scene.gltf");
 
 /* Taken from the monitor cube demo*/
@@ -3362,7 +3353,11 @@ function ScreenInteractive(props, x = 0, y = 1) {
         prevColor === "#b9ee8b" ? "orange" : "#b9ee8b"
       );
 
-      setDisplayText(displayText === "2024 update coming soon" ? "=)" : "2024 update coming soon");
+      setDisplayText(
+        displayText === "2024 update coming soon"
+          ? "=)"
+          : "2024 update coming soon"
+      );
     }, 1500);
     return () => clearInterval(intervalId);
   }, [displayText]);
@@ -3449,7 +3444,6 @@ function Screen({ named, frame, panel, children, ...props }) {
   );
 }
 
-
 function ImageScreen({ imageUrls, movable, inside, webUrl, ...props }) {
   const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -3461,13 +3455,13 @@ function ImageScreen({ imageUrls, movable, inside, webUrl, ...props }) {
     return texture;
   });
   const url = webUrl.map((webUrls) => {
-    return webUrls
+    return webUrls;
   });
 
   useEffect(() => {
     if (clicked) {
       {
-        console.log(imageIndex)
+        console.log(imageIndex);
         setImageIndex((imageIndex + 1) % textures.length);
         setWebIndex((webIndex + 1) % url.length);
       }
@@ -3478,13 +3472,11 @@ function ImageScreen({ imageUrls, movable, inside, webUrl, ...props }) {
 
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "auto";
-    if (!hovered) {
-      setTimeout(() => {
-        setImageIndex(0);
-        setWebIndex(0)
-      }, 2000); // go back to the first picture
+    if (movable) {
+      setImageIndex(0);
+      setWebIndex(0);
     }
-  }, [hovered]);
+  }, [movable]);
   return (
     <Screen {...props}>
       <PerspectiveCamera
@@ -3540,7 +3532,6 @@ function RedMesh({ webUrl, ...props }) {
       {...props}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
-      
       onClick={(e) => {
         e.stopPropagation();
         window.open(webUrl, "_blank");
@@ -3733,16 +3724,14 @@ function ImageScreen2({
 
   useEffect(() => {
     document.body.style.cursor = hovered ? "pointer" : "auto";
-    if (hovered) {
+    if (!movable) {
       // if movable is disabled
       setImageIndex(imageIndex === 0 ? 1 : imageIndex); // check current index and set it to 1 if it's 0, otherwise keep the same index
     } else {
       // if movable is enabled
-      setTimeout(() => {
-        setImageIndex(0);
-      }, 2000); // go back to the first picture
+      setImageIndex(0);
     }
-  }, [hovered]);
+  }, [movable]);
   return (
     <Screen {...props}>
       <PerspectiveCamera
