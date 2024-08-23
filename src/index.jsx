@@ -1,9 +1,7 @@
-import React, { Suspense } from "react";
-import ReactDOM from "react-dom";
-import "./style.css";
-import App from "./App";
-import { useProgress, Html } from "@react-three/drei";
+import React from "react";
 import { createRoot } from "react-dom/client";
+import App from "./App";
+import "./styles/style.css";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
