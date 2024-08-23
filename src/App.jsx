@@ -41,7 +41,7 @@ export default function App() {
 
   return (
     <>
-      <Canvas shadows width="128" height="128" dpr={[0.3, 0.6]}>
+      <Canvas shadows width="128" height="128" dpr={[0.6, 1]}>
         <color attach="background" args={["black"]} />
         <Suspense fallback={null}>
           <Bvh firstHitOnly>
