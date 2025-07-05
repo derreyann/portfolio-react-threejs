@@ -19,7 +19,7 @@ import {
   Selection,
   Sepia,
 } from "@react-three/postprocessing";
-import React, { Suspense, useRef, useState } from "react";
+import React, { Suspense, useRef, useState, useEffect } from "react";
 
 import { Model } from "./Model";
 import ReturnButton from "./returnButton";
@@ -28,45 +28,40 @@ import CameraSelectZoom from "./CameraSelectZoom";
 
 export default function App() {
   const ref = useRef();
-  const [movableEnabled, setMovableEnabled] = useState(true);
   const [movableEnabled2, setMovableEnabled2] = useState(true);
-
   const [selectedMeshName, setSelectedMeshName] = useState("");
-  const onMeshClick = (mesh) => {
-    setSelectedMeshName(mesh.name);
-  };
-  const handleReturnClick = () => {
-    setMovableEnabled2(true);
-  };
+
+  const onMeshClick = (mesh) => setSelectedMeshName(mesh.name);
+  const handleReturnClick = () => setMovableEnabled2(true);
+
+  const [dpr, setDpr] = useState(() => Math.min(1, window.devicePixelRatio));
 
   return (
     <>
-      <Canvas shadows width="128" height="128" dpr={[0.45, 0.8]}>
+      <Canvas shadows dpr={dpr} performance={{ min: 0.2 }} onCreated={({ gl }) => {
+        gl.domElement.style.imageRendering = "pixelated"; // Prevent pixelation
+      }}
+>
         <color attach="background" args={["black"]} />
         <Suspense fallback={null}>
-          <Bvh firstHitOnly>
+          <Bvh firstHitOnly enabled={movableEnabled2}>
             <PerspectiveCamera
               makeDefault
-              position={[
-                -1.4235082949646687, 0.20562504834542494, 12.610933351075456,
-              ]}
-              rotation={[
-                0.3788855445285419, -0.05488506456904811, -0.008547619429015501,
-              ]}
+              position={[-1.42, 0.21, 12.61]}
+              rotation={[0.38, -0.05, -0.01]}
               fov={40}
-              resolution={128}
-              lookAt={(0, 0, 0)}
+              near={0.1}
+              far={1000}
             />
             <hemisphereLight intensity={0.15} groundColor="black" />
             <SpotLight
-              position={[
-                -7.321508953834595, 134.55811607486405, -41.339696743147556,
-              ]}
+              position={[-7.32, 134.56, -41.34]}
               angle={0.12}
               penumbra={1}
-              intensity={1}
+              intensity={0.8}
               castShadow
-              shadow-mapSize={512}
+              shadow-mapSize={256}
+              shadow-bias={-0.001}
             />
             <Bounds observe damping={3.5} margin={0.9}>
               <Selection>
@@ -77,6 +72,9 @@ export default function App() {
                   <Model
                     SelectToZoom={onMeshClick}
                     movableEnabled={movableEnabled2}
+                    receiveShadow
+                    castShadow
+                    frustumCulled
                   />
                   <BakeShadows />
                 </CameraSelectZoom>
@@ -84,30 +82,28 @@ export default function App() {
             </Bounds>
             <Sparkles
               position={[0, 4, 0]}
-              count={200}
-              scale={10}
-              size={0.85}
-              speed={0.1}
-              color={"#eeeeee"}
+              count={100}
+              scale={8}
+              size={0.7}
+              speed={0.2}
+              color="#eeeeee"
             />
-            <EffectComposer resolutionScale={1} enableNormalPass={0}>
-              <Sepia intensity={0.3} />
+            <EffectComposer resolutionScale={0.5} enableNormalPass={0} multisampling={0}>
               <Bloom
-                luminanceThreshold={0}
+                luminanceThreshold={0.1}
                 mipmapBlur
-                luminanceSmoothing={1.0}
-                intensity={3.5}
+                luminanceSmoothing={0.8}
+                intensity={2.5}
               />
               <Autofocus mouse focalLength={2} bokehScale={0.4} height={500} />
-              <ChromaticAberration
+            </EffectComposer>
+            <AdaptiveDpr pixelated />
+            <ChromaticAberration
                 opacity={0.44}
                 radialModulation
                 offset={[0.002, 0.002]}
               />
               <Noise opacity={0.035} />
-            </EffectComposer>
-            <BakeShadows />
-            <AdaptiveDpr pixelated />
             <AdaptiveEvents />
           </Bvh>
         </Suspense>
@@ -115,14 +111,12 @@ export default function App() {
       {!movableEnabled2 && <ReturnButton onClick={handleReturnClick} />}
       <Loader
         containerStyles={styles.container}
-        dataStyles={styles.data}
-        barStyles={styles.bar}
-        innerStyles={styles.inner}
+        dataInterpolation={(p) => `Loading ${p.toFixed(0)}%`}
+        initialState={(active) => active}
       />
     </>
   );
 }
-
 /**
  * Custom Styles for the loader component
  */
