@@ -13,7 +13,7 @@ export default function TextScreen(props, x = 0, y = 1) {
   const [textClicked, setTextClicked] = useState(false);
   const [bgColor, setBgColor] = useState("black");
   const [textColor, setTextColor] = useState("#b9ee8b");
-  const [displayText, setDisplayText] = useState("internship found");
+  const [displayText, setDisplayText] = useState("hello :)");
 
   const ref = useRef();
 
@@ -25,11 +25,11 @@ export default function TextScreen(props, x = 0, y = 1) {
       );
 
       setDisplayText(
-        displayText === "2024 update coming soon"
-          ? "=)"
-          : "2024 update coming soon"
+        displayText === "hello :)"
+          ? "click around... 👆"
+          : "hello :)"
       );
-    }, 1500);
+    }, 3000);
     return () => clearInterval(intervalId);
   }, [displayText]);
 
