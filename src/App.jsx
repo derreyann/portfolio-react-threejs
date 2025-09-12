@@ -34,7 +34,7 @@ export default function App() {
   const onMeshClick = (mesh) => setSelectedMeshName(mesh.name);
   const handleReturnClick = () => setMovableEnabled2(true);
 
-  const [dpr, setDpr] = useState(() => Math.min(1, window.devicePixelRatio));
+  const [dpr, setDpr] = useState(() => Math.min(0.7, window.devicePixelRatio));
 
   return (
     <>
