@@ -6,12 +6,10 @@ body,
   touch-action: none;
   padding: 0;
   overflow: hidden;
-  height: 100vh;
-  width: device-width;
-  viewport-fit: cover;
+  height: 100%;
   background-color: black;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
   -webkit-user-select: none;
 }
-        
+    
